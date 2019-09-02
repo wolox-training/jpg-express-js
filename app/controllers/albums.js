@@ -1,41 +1,38 @@
-const rq = require('request-promise');
-
-const { urlApi } = require('../../config').common.resources;
+const albumService = require('../services/albums');
+const logger = require('../logger');
 
 let albums = [];
 
 exports.getAlbums = (req, res) => {
-  const options = {
-    method: 'GET',
-    uri: `${urlApi}/albums`,
-    json: true
-  };
-  rq(options)
+  logger.info('Iniciando la consulta de albums');
+  albumService
+    .getAlbums()
     .then(response => {
       albums = response;
     })
     .then(() => {
-      if (albums) res.send(albums);
-      else res.status(404).send();
+      if (albums) {
+        res.send(albums);
+        logger.info('Envío de albums exitoso');
+      } else res.status(404).send();
     })
-    .catch(err => console.log(err.message));
+    .catch(err => logger.err(err.message));
 };
 
 exports.getAlbumById = (req, res) => {
+  logger.info('Iniciando la consulta de fotos');
   let photos = [];
   const albumId = req.params.id;
-  const options = {
-    method: 'GET',
-    uri: `${urlApi}/photos?albumId=${albumId}`,
-    json: true
-  };
-  rq(options)
+  albumService
+    .getAlbumById(albumId)
     .then(response => {
       photos = response;
     })
     .then(() => {
-      if (photos) res.send(photos);
-      else res.status(404).send();
+      if (photos) {
+        res.send(photos);
+        logger.info('Envío de fotos exitoso');
+      } else res.status(404).send();
     })
-    .catch(err => console.log(err.message));
+    .catch(err => logger.err(err.message));
 };
