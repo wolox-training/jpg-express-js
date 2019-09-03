@@ -1,38 +1,28 @@
 const albumService = require('../services/albums');
 const logger = require('../logger');
+const errors = require('../errors');
 
-let albums = [];
-
-exports.getAlbums = (req, res) => {
+exports.getAlbums = (req, res, next) => {
   logger.info('Iniciando la consulta de albums');
   albumService
     .getAlbums()
     .then(response => {
-      albums = response;
+      if (!response.length) return Promise.reject(errors.emptyData('data unavailable'));
+      logger.info('Envío de albums exitoso');
+      return res.send(response);
     })
-    .then(() => {
-      if (albums) {
-        res.send(albums);
-        logger.info('Envío de albums exitoso');
-      } else res.status(404).send();
-    })
-    .catch(err => logger.err(err.message));
+    .catch(next);
 };
 
-exports.getAlbumById = (req, res) => {
+exports.getAlbumById = (req, res, next) => {
   logger.info('Iniciando la consulta de fotos');
-  let photos = [];
   const albumId = req.params.id;
   albumService
     .getAlbumById(albumId)
     .then(response => {
-      photos = response;
+      if (!response.length) return Promise.reject(errors.emptyData('data unavailable'));
+      logger.info('Envío de fotos exitoso');
+      return res.send(response);
     })
-    .then(() => {
-      if (photos) {
-        res.send(photos);
-        logger.info('Envío de fotos exitoso');
-      } else res.status(404).send();
-    })
-    .catch(err => logger.err(err.message));
+    .catch(next);
 };
