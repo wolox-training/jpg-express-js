@@ -1,4 +1,6 @@
 const rq = require('request-promise');
+const errors = require('../errors');
+const logger = require('../logger');
 
 const { urlApi } = require('../../config').common.resources;
 
@@ -8,7 +10,10 @@ exports.getAlbums = () => {
     uri: `${urlApi}/albums`,
     json: true
   };
-  return rq(options);
+  return rq(options).catch(error => {
+    logger.error(error);
+    return Promise.reject(errors.requestError('Bad request'));
+  });
 };
 
 exports.getAlbumById = albumId => {
@@ -17,5 +22,8 @@ exports.getAlbumById = albumId => {
     uri: `${urlApi}/photos?albumId=${albumId}`,
     json: true
   };
-  return rq(options);
+  return rq(options).catch(error => {
+    logger.error(error);
+    return Promise.reject(errors.requestError('Bad request'));
+  });
 };
