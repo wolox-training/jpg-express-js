@@ -7,5 +7,5 @@ exports.init = app => {
   app.get('/health', healthCheck);
   app.get('/albums', getAlbums);
   app.get('/albums/:id/photos', getAlbumById);
-  app.post('/users', registerValidator, registerUser);
+  app.post('/users', registerValidator(), registerUser);
 };

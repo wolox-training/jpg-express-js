@@ -1,15 +1,15 @@
 const logger = require('../logger');
-const errors = require('../errors');
 const userService = require('../services/users');
+const { registerBodyMapper } = require('../mappers/users');
 
 exports.registerUser = (req, res, next) => {
-  logger.info('Iniciando la creacion de usuario');
-  // encriptar contraseña
-  userService
-    .registerUser(req)
+  logger.info('Starting the user creation');
+  const user = registerBodyMapper(req.body);
+  return userService
+    .registerUser(user, req)
     .then(response => {
-      if (!response.length) return Promise.reject(errors.emptyData('user not created'));
-      logger.info('Succes user creation');
+      logger.info(response.name);
+      logger.info('Success user creation');
       return res.send(response);
     })
     .catch(next);
