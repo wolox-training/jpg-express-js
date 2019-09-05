@@ -1,5 +1,4 @@
 const request = require('supertest');
-const { factory } = require('factory-girl');
 const app = require('../../../');
 const { mookUser } = require('../../mooks/users');
 
@@ -15,22 +14,25 @@ describe('POST /users', () => {
       .expect(404));
 
   it('should fail if a email already exist', () =>
-    factory.create('users').then(response =>
-      request(app)
-        .post('/users')
-        .send({ ...user, email: response.email })
-        .then(() => expect.rejects.toThrow('database_error'))
-    ));
+    request(app)
+      .post('/users')
+      .send(user)
+      .then(
+        request(app)
+          .post('/users')
+          .send(user)
+          .expect(503)
+      ));
 
   it('should fail if a user insert a bad password', () =>
     request(app)
       .post('/users')
       .send({ ...user, password: '123' })
-      .then(() => expect.rejects.toThrow('database_error')));
+      .expect(404));
 
   it('should fail due to null parameters', () =>
     request(app)
       .post('/users')
       .send({ ...user, name: '', password: '' })
-      .then(() => expect.rejects.toThrow('database_error')));
+      .expect(404));
 });
