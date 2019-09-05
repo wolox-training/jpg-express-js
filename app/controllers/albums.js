@@ -4,7 +4,7 @@ const errors = require('../errors');
 
 exports.getAlbums = (req, res, next) => {
   logger.info('Starting the albums query');
-  albumService
+  return albumService
     .getAlbums()
     .then(response => {
       if (!response.length) return Promise.reject(errors.emptyData('data unavailable'));
@@ -17,7 +17,7 @@ exports.getAlbums = (req, res, next) => {
 exports.getAlbumById = (req, res, next) => {
   logger.info('starting the photo query');
   const albumId = req.params.id;
-  albumService
+  return albumService
     .getAlbumById(albumId)
     .then(response => {
       if (!response.length) return Promise.reject(errors.emptyData('data unavailable'));
