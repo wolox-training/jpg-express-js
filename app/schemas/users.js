@@ -1,25 +1,37 @@
-/* eslint-disable no-useless-escape */
-const { check } = require('express-validator');
-const errors = require('../errors');
-// const { User } = require('../models');
+const { checkSchema } = require('express-validator');
 
-exports.registerValidator = () => [
-  check('email')
-    .isEmail()
-    .exists()
-    .custom(value => {
-      if (!/^[a-zA-Z0-9._-]+@wolox.(co|com.ar|cl|ar|mx)$/.test(value))
-        return Promise.reject(errors.invalidData('invalid email'));
-      return true;
-    }),
-  check('password')
-    .isLength({ min: 8 })
-    .isAlphanumeric()
-    .exists(),
-  check('name')
-    .isAlpha()
-    .exists({ checkNull: true }),
-  check('last_name')
-    .isAlpha()
-    .exists({ checkNull: true })
-];
+exports.registerValidator = checkSchema({
+  name: {
+    errorMessage: 'incorrect name',
+    type: String,
+    required: true,
+    length: {
+      min: 2
+    }
+  },
+  last_name: {
+    errorMessage: 'incorrect last_name',
+    type: String,
+    required: true,
+    length: {
+      min: 2
+    }
+  },
+  password: {
+    errorMessage: 'incorrect password',
+    type: String,
+    required: true,
+    length: {
+      min: 8
+    }
+  },
+  email: {
+    errorMessage: 'incorrect email',
+    isEmail: true,
+    required: true,
+    matches: {
+      options: [/^[a-zA-Z0-9._-]+@wolox.(co|com.ar|cl|ar|mx)$/],
+      errorMessage: 'Is not a valid email domain'
+    }
+  }
+});
