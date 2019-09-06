@@ -1,4 +1,4 @@
-exports.mookUser = () => ({
+exports.mockUser = () => ({
   name: 'juan',
   last_name: 'gomes',
   password: '12345678',
