@@ -15,3 +15,19 @@ exports.validateUser = user => {
     return Promise.reject(errors.databaseError(error.message));
   });
 };
+
+exports.singIn = user => {
+  const find = { where: { email: user.email, password: user.password } };
+  return User.findOne(find).catch(error => {
+    logger.error(error);
+    return Promise.reject(errors.databaseError(error.message));
+  });
+};
+
+exports.createToken = user => {
+  const find = { where: { email: user.email, password: user.password } };
+  return User.findOne(find).catch(error => {
+    logger.error(error);
+    return Promise.reject(errors.databaseError(error.message));
+  });
+};

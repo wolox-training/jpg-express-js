@@ -17,3 +17,16 @@ exports.registerUser = (req, res, next) => {
     })
     .catch(next);
 };
+
+exports.validateUser = (req, res, next) => {
+  logger.info('Starting the user validation');
+  const user = registerBodyMapper(req.body);
+  return userService
+    .singIn(user)
+    .then(responseUser => {
+      if (responseUser !== null) return Promise.reject(errors.databaseError('user already exists'));
+      logger.info(`User with name ${responseUser.name} have singged in`);
+      return res.send({ token: userService.createToken(user) });
+    })
+    .catch(next);
+};

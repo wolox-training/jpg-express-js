@@ -35,3 +35,23 @@ exports.registerValidator = checkSchema({
     }
   }
 });
+
+exports.sessionValidator = checkSchema({
+  password: {
+    errorMessage: 'incorrect password',
+    type: String,
+    required: true,
+    length: {
+      min: 8
+    }
+  },
+  email: {
+    errorMessage: 'incorrect email',
+    isEmail: true,
+    required: true,
+    matches: {
+      options: [/^[a-zA-Z0-9._-]+@wolox.(co|com.ar|cl|ar|mx)$/],
+      errorMessage: 'Is not a valid email domain'
+    }
+  }
+});
