@@ -9,15 +9,11 @@ exports.registerUser = (req, res, next) => {
   return userService
     .validateUser(user)
     .then(responseUser => {
-      if (!responseUser) return Promise.reject(errors.databaseError('user already exists'));
-      return userService
-        .registerUser(user, req)
-        .then(response => {
-          logger.info(response.name);
-          logger.info('Success user creation');
-          return res.send(response);
-        })
-        .catch(next);
+      if (responseUser !== null) return Promise.reject(errors.databaseError('user already exists'));
+      return userService.registerUser(user).then(response => {
+        logger.info(`User wiyh name ${response.name}, and email ${response.name}, was created`);
+        return res.send(response);
+      });
     })
     .catch(next);
 };
