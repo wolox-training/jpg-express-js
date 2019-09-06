@@ -9,9 +9,7 @@ describe('POST /users', () => {
     request(app)
       .post('/users')
       .send(user)
-      .set('Accept', 'application/json')
-      .expect('Content-Type', /json/)
-      .expect(404));
+      .expect(201));
 
   it('should fail if a email already exist', () =>
     request(app)
@@ -21,18 +19,21 @@ describe('POST /users', () => {
         request(app)
           .post('/users')
           .send(user)
-          .expect(503)
+          .expect(422)
       ));
 
   it('should fail if a user insert a bad password', () =>
     request(app)
       .post('/users')
       .send({ ...user, password: '123' })
-      .expect(404));
+      .expect(422));
 
-  it('should fail due to null parameters', () =>
-    request(app)
+  it('should fail due to null parameters', () => {
+    delete user.name;
+    delete user.password;
+    return request(app)
       .post('/users')
-      .send({ ...user, name: '', password: '' })
-      .expect(404));
+      .send(user)
+      .expect(422);
+  });
 });
