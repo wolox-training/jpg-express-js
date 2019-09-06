@@ -14,3 +14,6 @@ exports.requestError = message => internalError(message, exports.REQUEST_ERROR);
 
 exports.EMPTY_ERROR = 'empty_error';
 exports.emptyData = message => internalError(message, exports.EMPTY_ERROR);
+
+exports.INVALID_DATA_ERROR = 'invalid_data_error';
+exports.invalidData = message => internalError(message, exports.INVALID_DATA_ERROR);
