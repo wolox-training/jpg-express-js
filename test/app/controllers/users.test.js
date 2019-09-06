@@ -1,8 +1,8 @@
 const request = require('supertest');
 const app = require('../../../');
-const { mookUser } = require('../../mooks/users');
+const { mockUser } = require('../../mocks/users');
 
-const user = mookUser();
+const user = mockUser();
 
 describe('POST /users', () => {
   it('shuld be a valid user', () =>

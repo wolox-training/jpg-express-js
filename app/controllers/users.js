@@ -9,7 +9,7 @@ exports.registerUser = (req, res, next) => {
   return userService
     .validateUser(user)
     .then(responseUser => {
-      if (!responseUser) return Promise.reject(errors.databaseError('user already exists'));
+      if (responseUser !== null) return Promise.reject(errors.databaseError('user already exists'));
       return userService
         .registerUser(user, req)
         .then(response => {
