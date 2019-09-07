@@ -1,8 +1,11 @@
+const { factory } = require('factory-girl');
 const request = require('supertest');
 const app = require('../../../');
 const { mockUser } = require('../../mocks/users');
+const { factoryByModel } = require('../../factory/factory_by_models');
 
 const user = mockUser();
+factoryByModel('User');
 
 describe('POST /users', () => {
   it('shuld be a valid user', () =>
@@ -12,15 +15,19 @@ describe('POST /users', () => {
       .expect(201));
 
   it('should fail if a email already exist', () =>
-    request(app)
-      .post('/users')
-      .send(user)
-      .then(
-        request(app)
-          .post('/users')
-          .send(user)
-          .expect(422)
-      ));
+    factory.create('User').then(userIn => {
+      const us = userIn.dataValues;
+      const mockUs = {
+        name: us.name,
+        last_name: us.last_name,
+        password: us.password,
+        email: us.email
+      };
+      return request(app)
+        .post('/users')
+        .send(mockUs)
+        .expect(422);
+    }));
 
   it('should fail if a user insert a bad password', () =>
     request(app)

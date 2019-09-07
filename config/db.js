@@ -15,7 +15,7 @@ module.exports = {
     database: config.name,
     host: config.host,
     dialect: 'postgres',
-    logging: false
+    logging: true
   },
   production: {
     username: config.username,

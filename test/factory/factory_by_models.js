@@ -68,6 +68,8 @@ const generateByDatatypes = (model, key, attribute) => {
 
   if (attribute[key] === 'TEXT') return factory.chance('paragraph');
 
+  if (attribute[key] === 'DATE') return factory.chance('date');
+
   // Here, you can add more Sequelize DATATYPES
   return factory.chance('string');
 };

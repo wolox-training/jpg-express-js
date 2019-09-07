@@ -1,6 +1,9 @@
+const jwt = require('jwt-simple');
+const moment = require('moment');
 const errors = require('../errors');
 const logger = require('../logger');
 const { User } = require('../models');
+const config = require('../../config/config');
 
 exports.registerUser = user =>
   User.create(user).catch(error => {
@@ -25,9 +28,12 @@ exports.singIn = user => {
 };
 
 exports.createToken = user => {
-  const find = { where: { email: user.email, password: user.password } };
-  return User.findOne(find).catch(error => {
-    logger.error(error);
-    return Promise.reject(errors.databaseError(error.message));
-  });
+  const payload = {
+    sub: user.name,
+    iat: moment().unix(),
+    exp: moment()
+      .add(14, 'days')
+      .unix()
+  };
+  return jwt.encode(payload, config.TOKEN_SECRET);
 };
