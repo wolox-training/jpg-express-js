@@ -12,8 +12,8 @@ exports.defaultError = message => internalError(message, exports.DEFAULT_ERROR);
 exports.REQUEST_ERROR = 'request_error';
 exports.requestError = message => internalError(message, exports.REQUEST_ERROR);
 
-exports.EMPTY_ERROR = 'empty_error';
-exports.emptyData = message => internalError(message, exports.EMPTY_ERROR);
+exports.USER_EXISTS_ERROR = 'user_exists_error';
+exports.userExistsError = message => internalError(message, exports.USER_EXISTS_ERROR);
 
 exports.INVALID_DATA_ERROR = 'invalid_data_error';
 exports.invalidData = message => internalError(message, exports.INVALID_DATA_ERROR);
