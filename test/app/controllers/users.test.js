@@ -33,7 +33,7 @@ describe('POST /users', () => {
     request(app)
       .post('/users')
       .send({ ...user, password: '123' })
-      .expect(422));
+      .expect(404));
 
   it('should fail due to null parameters', () => {
     delete user.name;
@@ -41,6 +41,6 @@ describe('POST /users', () => {
     return request(app)
       .post('/users')
       .send(user)
-      .expect(422);
+      .expect(404);
   });
 });
