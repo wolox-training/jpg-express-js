@@ -26,7 +26,7 @@ describe('POST /users', () => {
       return request(app)
         .post('/users')
         .send(mockUs)
-        .expect(422);
+        .expect(404);
     }));
 
   it('should fail if a user insert a bad password', () =>
