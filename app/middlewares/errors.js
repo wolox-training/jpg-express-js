@@ -8,7 +8,6 @@ const statusCodes = {
   [errors.DEFAULT_ERROR]: 500,
   [errors.REQUEST_ERROR]: 500,
   [errors.USER_EXISTS_ERROR]: 409,
-  [errors.USER_NOT_EXISTS_ERROR]: 409,
   [errors.INVALID_DATA_ERROR]: 422
 };
 
