@@ -1,5 +1,6 @@
 const jwt = require('jwt-simple');
 const moment = require('moment');
+const bcrypt = require('bcrypt');
 const errors = require('../errors');
 const logger = require('../logger');
 const { User } = require('../models');
@@ -20,11 +21,15 @@ exports.validateUser = user => {
 };
 
 exports.singIn = user => {
-  const find = { where: { email: user.email, password: user.password } };
-  return User.findOne(find).catch(error => {
+  try {
+    const find = { where: { email: user.email } };
+    return User.findOne(find)
+      .then(respUser => bcrypt.compare(user.password, respUser.password))
+      .catch(() => Promise.reject(errors.userNotExistsError('user does not exist')));
+  } catch (error) {
     logger.error(error);
     return Promise.reject(errors.databaseError(error.message));
-  });
+  }
 };
 
 exports.createToken = user => {

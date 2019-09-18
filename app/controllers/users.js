@@ -20,12 +20,12 @@ exports.registerUser = (req, res, next) => {
 
 exports.singIn = (req, res, next) => {
   logger.info('Starting the user validation');
-  const user = registerBodyMapper(req.body);
+  const user = req.body;
   return userService
     .singIn(user)
-    .then(responseUser => {
-      if (!responseUser) return Promise.reject(errors.invalidData('user not registered'));
-      logger.info(`User with name ${responseUser.name} have singged in`);
+    .then(response => {
+      if (!response) return Promise.reject(errors.invalidData('password incorrect'));
+      logger.info(`User with mail ${user.email} have singged in`);
       return res.status(200).send({ token: userService.createToken(user) });
     })
     .catch(next);
