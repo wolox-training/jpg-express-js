@@ -25,7 +25,7 @@ exports.singIn = user => {
     const find = { where: { email: user.email } };
     return User.findOne(find)
       .then(respUser => bcrypt.compare(user.password, respUser.password))
-      .catch(() => Promise.reject(errors.userNotExistsError('user does not exist')));
+      .catch(() => Promise.reject(errors.userExistsError('user does not exist')));
   } catch (error) {
     logger.error(error);
     return Promise.reject(errors.databaseError(error.message));
