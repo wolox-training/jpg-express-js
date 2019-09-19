@@ -1,6 +1,6 @@
 const moment = require('moment');
 const jwt = require('jwt-simple');
-const config = require('../../config/config');
+const { secret } = require('../../config').common.session;
 
 exports.createToken = any => {
   const payload = {
@@ -10,5 +10,5 @@ exports.createToken = any => {
       .add(14, 'days')
       .unix()
   };
-  return jwt.encode(payload, config.TOKEN_SECRET);
+  return jwt.encode(payload, secret);
 };
