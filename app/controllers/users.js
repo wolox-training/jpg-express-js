@@ -2,6 +2,8 @@ const logger = require('../logger');
 const userService = require('../services/users');
 const { registerBodyMapper } = require('../mappers/users');
 const errors = require('../errors');
+const interactor = require('../interactors/users');
+const token = require('../helpers/token');
 
 exports.registerUser = (req, res, next) => {
   logger.info('Starting the user creation');
@@ -20,13 +22,13 @@ exports.registerUser = (req, res, next) => {
 
 exports.singIn = (req, res, next) => {
   logger.info('Starting the user validation');
-  const user = req.body;
-  return userService
-    .singIn(user)
-    .then(response => {
-      if (!response) return Promise.reject(errors.invalidData('password incorrect'));
-      logger.info(`User with mail ${user.email} have singged in`);
-      return res.status(200).send({ token: userService.createToken(user) });
+  const userIn = req.body;
+  return interactor
+    .singIn(userIn)
+    .then(userFound => {
+      if (!userFound) return Promise.reject(errors.invalidData('password incorrect'));
+      logger.info(`User with mail ${userIn.email} have singged in`);
+      return res.status(200).send({ token: token.createToken(userIn) });
     })
     .catch(next);
 };
