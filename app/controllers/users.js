@@ -30,3 +30,15 @@ exports.singIn = (req, res, next) => {
     })
     .catch(next);
 };
+
+exports.getUsers = (req, res, next) => {
+  logger.info('Starting the user consult');
+  return userService
+    .getUsers()
+    .then(users => {
+      if (!users) return Promise.reject(errors.defaultError('There are not users availables'));
+      logger.info('Succsessfull users consult');
+      return res.status(200).send({ users });
+    })
+    .catch(next);
+};
