@@ -4,6 +4,7 @@ const { registerBodyMapper } = require('../mappers/users');
 const errors = require('../errors');
 const interactor = require('../interactors/users');
 const token = require('../helpers/token');
+const userDB = require('../services/userDB');
 
 exports.registerUser = (req, res, next) => {
   logger.info('Starting the user creation');
@@ -35,8 +36,8 @@ exports.singIn = (req, res, next) => {
 
 exports.getUsers = (req, res, next) => {
   logger.info('Starting the user consult');
-  return userService
-    .getUsers()
+  return userDB
+    .getAllUsers(req)
     .then(users => {
       if (!users) return Promise.reject(errors.defaultError('There are not users availables'));
       logger.info('Succsessfull users consult');
