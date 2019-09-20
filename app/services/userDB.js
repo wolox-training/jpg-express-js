@@ -8,19 +8,12 @@ exports.findUsersWhere = query =>
     return Promise.reject(errors.databaseError('Not a success users query'));
   });
 
-exports.getAllUsers = () =>
-  User.findAll({
-    limit: 5,
-    offset: 0
-  })
-    .then(users =>
-      users.map(user => {
-        const us = {
-          name: user.name,
-          last_name: user.last_name,
-          email: user.email
-        };
-        return us;
-      })
-    )
-    .catch(() => Promise.reject(errors.databaseError('cant get users')));
+exports.getAllUsers = ({ query: { page, limit = 10 } }) => {
+  const offset = page * limit;
+  const fixLimit = limit > 1000 ? 100 : limit;
+  return User.findAndCountAll({
+    limit: fixLimit,
+    offset,
+    raw: true
+  }).catch(() => Promise.reject(errors.databaseError('cant get users')));
+};

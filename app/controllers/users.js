@@ -5,6 +5,7 @@ const errors = require('../errors');
 const interactor = require('../interactors/users');
 const token = require('../helpers/token');
 const userDB = require('../services/userDB');
+const serializer = require('../serializers/users');
 
 exports.registerUser = (req, res, next) => {
   logger.info('Starting the user creation');
@@ -41,7 +42,8 @@ exports.getUsers = (req, res, next) => {
     .then(users => {
       if (!users) return Promise.reject(errors.defaultError('There are not users availables'));
       logger.info('Succsessfull users consult');
-      return res.status(200).send({ users });
+      const response = serializer.serializeUsersResponse(users, req);
+      return res.status(200).send(response);
     })
     .catch(next);
 };
