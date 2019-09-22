@@ -3,6 +3,7 @@ const crypt = require('../services/encrypt');
 const errors = require('../errors');
 const token = require('../helpers/token');
 const logger = require('../logger');
+const userService = require('../services/users');
 
 exports.singIn = user => {
   const query = { where: { email: user.email } };
@@ -19,3 +20,9 @@ exports.singIn = user => {
       return Promise.resolve({ token: token.createToken(user) });
     });
 };
+
+exports.registerAdmin = user =>
+  userService.validateUser(user).then(response => {
+    if (!response) userService.registerAdmin(user).then(console.log);
+    userService.becomeAdmin(user).then(console.log);
+  });

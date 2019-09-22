@@ -15,3 +15,21 @@ exports.validateUser = user => {
     return Promise.reject(errors.databaseError(error.message));
   });
 };
+
+exports.registerAdmin = user =>
+  User.create(user, { admin: true }).catch(error => {
+    logger.error(error);
+    return Promise.reject(errors.databaseError(error.message));
+  });
+
+exports.becomeAdmin = user =>
+  User.findOne(user)
+    .on('success', us => {
+      us.insert({ admin: true }).success(() => {
+        logger.info('register inserted');
+      });
+    })
+    .catch(error => {
+      logger.error(error);
+      return Promise.reject(errors.databaseError(error.message));
+    });

@@ -21,6 +21,18 @@ exports.registerUser = (req, res, next) => {
     .catch(next);
 };
 
+exports.registerAdmin = (req, res, next) => {
+  logger.info('Starting the admin register');
+  const user = registerBodyMapper(req.body);
+  return interactor
+    .registerAdmin(user)
+    .then(response => {
+      logger.info('Succssesfull admin register');
+      return res.status(201).send(response);
+    })
+    .catch(next);
+};
+
 exports.singIn = (req, res, next) =>
   interactor
     .singIn(req.body)
