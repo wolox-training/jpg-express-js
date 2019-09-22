@@ -1,7 +1,7 @@
 exports.serializeUsersResponse = (allUsers, req) => {
   const users = allUsers.rows.map(user => ({
     name: user.name,
-    lastName: user.lastName,
+    last_name: user.lastName,
     email: user.email
   }));
   const totalPages = Math.ceil(allUsers.count / req.query.limit);

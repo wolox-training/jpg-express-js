@@ -75,3 +75,23 @@ describe('POST /users/sessions', () => {
         .expect(422);
     }));
 });
+
+describe('GET /users', () => {
+  it.only('should return a list of 5 users', () => {
+    factory.create('User').then(us => {
+      const mokReq = {
+        email: us.email,
+        password: us.password
+      };
+      return request(app)
+        .post('/users/sessions')
+        .send(mokReq)
+        .then(res =>
+          request(app)
+            .get('/users')
+            .send({ 'x-access-token': res })
+            .expect(200)
+        );
+    });
+  });
+});
