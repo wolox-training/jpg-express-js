@@ -16,6 +16,14 @@ exports.validateUser = user => {
   });
 };
 
+exports.validateAdmin = user => {
+  const find = { where: { email: user.email, name: user.name, admin: true } };
+  return User.findOne(find).catch(error => {
+    logger.error(error);
+    return Promise.reject(errors.databaseError(error.message));
+  });
+};
+
 exports.registerAdmin = user =>
   User.create(user, { admin: true }).catch(error => {
     logger.error(error);

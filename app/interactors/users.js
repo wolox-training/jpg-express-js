@@ -22,7 +22,7 @@ exports.singIn = user => {
 };
 
 exports.registerAdmin = user =>
-  userService.validateUser(user).then(response => {
+  userService.validateAdmin(user).then(response => {
     if (!response) userService.registerAdmin(user).then(console.log);
     userService.becomeAdmin(user).then(console.log);
   });
