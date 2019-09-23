@@ -16,28 +16,14 @@ exports.validateUser = user => {
   });
 };
 
-exports.validateAdmin = user => {
-  const find = { where: { email: user.email, name: user.name, admin: true } };
-  return User.findOne(find).catch(error => {
-    logger.error(error);
-    return Promise.reject(errors.databaseError(error.message));
-  });
-};
-
 exports.registerAdmin = user =>
-  User.create(user, { admin: true }).catch(error => {
+  User.create({ ...user, admin: true }).catch(error => {
     logger.error(error);
     return Promise.reject(errors.databaseError(error.message));
   });
 
 exports.becomeAdmin = user =>
-  User.findOne(user)
-    .on('success', us => {
-      us.insert({ admin: true }).success(() => {
-        logger.info('register inserted');
-      });
-    })
-    .catch(error => {
-      logger.error(error);
-      return Promise.reject(errors.databaseError(error.message));
-    });
+  User.update({ admin: true }, { where: { email: user.email } }).catch(error => {
+    logger.error(error);
+    return Promise.reject(errors.databaseError(error.message));
+  });

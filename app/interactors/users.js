@@ -22,7 +22,10 @@ exports.singIn = user => {
 };
 
 exports.registerAdmin = user =>
-  userService.validateAdmin(user).then(response => {
-    if (!response) userService.registerAdmin(user).then(console.log);
-    userService.becomeAdmin(user).then(console.log);
+  userService.validateUser(user).then(response => {
+    if (!response)
+      return userService
+        .registerAdmin(user)
+        .then(res => console.log(res, 'succsess admin - Not registered as user'));
+    return userService.becomeAdmin(user).then(res => console.log(res, 'Registered User as an admin'));
   });
