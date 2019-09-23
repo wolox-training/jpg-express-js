@@ -4,6 +4,7 @@ const { registerUser, singIn, getUsers, registerAdmin } = require('./controllers
 const { registerValidator, sessionValidator } = require('../app/schemas/users');
 const { checkError } = require('./middlewares/validatorSchema');
 const { auth } = require('./middlewares/auth');
+const { admin } = require('./middlewares/auth').admin;
 
 exports.init = app => {
   app.get('/health', healthCheck);
@@ -12,5 +13,5 @@ exports.init = app => {
   app.get('/users', auth, getUsers);
   app.post('/users', [registerValidator, checkError], registerUser);
   app.post('/users/sessions', [sessionValidator, checkError], singIn);
-  app.post('/admin/users', [registerValidator, checkError, auth], registerAdmin);
+  app.post('/admin/users', [registerValidator, checkError, admin], registerAdmin);
 };

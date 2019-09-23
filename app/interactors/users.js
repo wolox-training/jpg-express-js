@@ -22,10 +22,14 @@ exports.singIn = user => {
 };
 
 exports.registerAdmin = user =>
-  userService.validateUser(user).then(response => {
-    if (!response)
-      return userService
-        .registerAdmin(user)
-        .then(res => console.log(res, 'succsess admin - Not registered as user'));
-    return userService.becomeAdmin(user).then(res => console.log(res, 'Registered User as an admin'));
-  });
+  userService
+    .validateUser(user)
+    .then(response => {
+      if (!response) return userService.registerAdmin(user);
+      return userService.becomeAdmin(user);
+    })
+    .then(() => {
+      logger.info('Succssesfull admin register');
+      return Promise.resolve({ admin: { name: user.name, email: user.email } });
+      // add serializer
+    });

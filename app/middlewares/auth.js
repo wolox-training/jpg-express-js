@@ -1,3 +1,4 @@
+// const session = require('express-session');
 const tokenService = require('../helpers/token');
 
 exports.auth = (req, res, next) => {
@@ -10,3 +11,5 @@ exports.auth = (req, res, next) => {
     return res.status(400).send({ token: 'Invalid token.' });
   }
 };
+
+// exports.admin = (req, res, next) => {};
