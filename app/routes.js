@@ -3,8 +3,7 @@ const { getAlbums, getAlbumById } = require('./controllers/albums');
 const { registerUser, singIn, getUsers, registerAdmin } = require('./controllers/users');
 const { registerValidator, sessionValidator } = require('../app/schemas/users');
 const { checkError } = require('./middlewares/validatorSchema');
-const { auth } = require('./middlewares/auth');
-const { admin } = require('./middlewares/auth').admin;
+const { auth, admin } = require('./middlewares/auth');
 
 exports.init = app => {
   app.get('/health', healthCheck);
