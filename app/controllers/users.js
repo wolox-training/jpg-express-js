@@ -26,9 +26,12 @@ exports.registerAdmin = (req, res, next) => {
   const user = registerBodyMapper(req.body);
   return interactor
     .registerAdmin(user)
-    .then(response => {
-      logger.info('Succssesfull admin register');
-      return res.status(201).send(response);
+    .then(admin => {
+      if (!admin) return res.status(201).send({ admin: { name: user.name, email: user.email } });
+      return interactor.registerAdmin(user).then(() => {
+        logger.info('Succssesfull admin register');
+        return res.status(201).send({ admin: { name: user.name, email: user.email } });
+      });
     })
     .catch(next);
 };
