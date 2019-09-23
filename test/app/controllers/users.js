@@ -3,8 +3,10 @@ const request = require('supertest');
 const app = require('../../../app');
 const { mockUser } = require('../../mocks/users');
 const { factoryByModel } = require('../../factory/factory_by_models');
+const token = require('../../../app/helpers/token');
 
 const user = mockUser();
+
 factoryByModel('User');
 
 describe('POST /users', () => {
@@ -77,21 +79,30 @@ describe('POST /users/sessions', () => {
 });
 
 describe('GET /users', () => {
-  it.only('should return a list of 5 users', () => {
-    factory.create('User').then(us => {
-      const mokReq = {
+  it.only('should return a list of users', () => {
+    factory.create('User').then(async res => {
+      const us = res.dataValues;
+      const mockU = {
+        name: us.name,
+        lastName: us.lastName,
         email: us.email,
-        password: us.password
+        password: 12345678
       };
+      const tok = await token.createToken(mockU);
       return request(app)
-        .post('/users/sessions')
-        .send(mokReq)
-        .then(res =>
-          request(app)
-            .get('/users')
-            .send({ 'x-access-token': res })
-            .expect(200)
-        );
+        .get('/users')
+        .send({ 'x-access-token': tok })
+        .expect(200);
+    });
+  });
+
+  it.only('should fail due to bad authorization token', () => {
+    factory.create('User').then(() => {
+      const tok = 'dfghjkl';
+      return request(app)
+        .get('/users')
+        .send({ 'x-access-token': tok })
+        .expect(400);
     });
   });
 });

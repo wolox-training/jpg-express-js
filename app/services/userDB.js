@@ -8,7 +8,7 @@ exports.findUsersWhere = query =>
     return Promise.reject(errors.databaseError('Not a success users query'));
   });
 
-exports.getAllUsers = ({ query: { page, limit = 10 } }) => {
+exports.getAllUsers = ({ query: { page = 0, limit = 10 } }) => {
   const offset = page * limit;
   const fixLimit = limit > 1000 ? 100 : limit;
   return User.findAndCountAll({
