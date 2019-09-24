@@ -1,7 +1,7 @@
-const bcrypt = require('bcrypt');
+const crypt = require('../services/encrypt');
 
 exports.registerBodyMapper = body => {
-  const hash = bcrypt.hashSync(body.password, 10);
+  const hash = crypt.encrypt(body.password);
   return {
     ...body,
     lastName: body.last_name,
