@@ -1,12 +1,13 @@
 const tokenService = require('../helpers/token');
+const errors = require('../errors');
 
 exports.auth = (req, res, next) => {
   const token = req.headers['x-access-token'] || req.headers.authorization;
-  if (!token) return res.status(401).send({ token: 'Access denied. No token provided.' });
+  if (!token) return next(errors.invalidToken('No token available'));
   try {
     tokenService.decodeToken(token);
     return next();
   } catch (ex) {
-    return res.status(400).send({ token: 'Invalid token.' });
+    return next(errors.invalidToken('Not a valid token'));
   }
 };
