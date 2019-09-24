@@ -36,8 +36,7 @@ exports.registerAdmin = user =>
 
 exports.getAllUsers = req =>
   userDB.getAllUsers(req).then(users => {
-    if (!users) return Promise.reject(errors.defaultError('There are not users availables'));
+    if (!users) return Promise.reject(errors.notFoundError('There are not users availables'));
     logger.info('Succsessfull users consult');
-    const response = serializer.serializeUsersResponse(users, req);
-    return Promise.resolve(response);
+    return Promise.resolve(serializer.serializeUsersResponse(users, req));
   });
