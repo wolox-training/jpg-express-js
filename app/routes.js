@@ -12,5 +12,5 @@ exports.init = app => {
   app.get('/users', auth, getUsers);
   app.post('/users', [registerValidator, checkError], registerUser);
   app.post('/users/sessions', [sessionValidator, checkError], singIn);
-  app.post('/admin/users', [registerValidator, checkError, admin], registerAdmin);
+  app.post('/admin/users', [admin, registerValidator, checkError], registerAdmin);
 };
