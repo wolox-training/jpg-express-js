@@ -77,7 +77,7 @@ describe('POST /users/sessions', () => {
     }));
 });
 
-describe.only('GET /users', () => {
+describe('GET /users', () => {
   const password = '$2b$10$q0/nJGRvSyZz3i7fgvTY2OwMl4MPozMQI/62Bkz5F88tSl.3Y2W4u';
   const mockEmail = 'juan@wolox.co';
   const mockPass = '12345678';
@@ -129,6 +129,6 @@ describe.only('GET /users', () => {
           .set({ 'x-access-token': 'bad-token' })
       )
       .then(response => {
-        expect(response.statusCode).toBe(400);
+        expect(response.statusCode).toBe(401);
       }));
 });
