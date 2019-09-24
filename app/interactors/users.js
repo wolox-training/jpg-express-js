@@ -12,9 +12,8 @@ exports.singIn = user => {
     .findUsersWhere(query)
     .then(resp => {
       if (!resp) return Promise.reject(errors.userExistsError('user does not exist'));
-      return resp;
+      return crypt.decrypt(user.password, resp.password);
     })
-    .then(respUser => crypt.decrypt(user.password, respUser.password))
     .then(userFound => {
       if (!userFound) return Promise.reject(errors.invalidData('password incorrect'));
       logger.info(`User with mail ${user.email} have singged in`);
