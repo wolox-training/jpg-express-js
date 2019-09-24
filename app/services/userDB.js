@@ -9,8 +9,8 @@ exports.findUsersWhere = query =>
   });
 
 exports.getAllUsers = ({ query: { page = 0, limit = 10 } }) => {
-  const offset = page * limit;
   const fixLimit = limit > 1000 ? 100 : limit;
+  const offset = page * limit;
   return User.findAndCountAll({
     limit: fixLimit,
     offset,
