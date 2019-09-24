@@ -4,6 +4,7 @@ const errors = require('../errors');
 const token = require('../helpers/token');
 const logger = require('../logger');
 const userService = require('../services/users');
+const serializer = require('../serializers/users');
 
 exports.singIn = user => {
   const query = { where: { email: user.email } };
@@ -33,3 +34,11 @@ exports.registerAdmin = user =>
       return Promise.resolve({ admin: { name: user.name, email: user.email } });
       // add serializer
     });
+
+exports.getAllUsers = req =>
+  userDB.getAllUsers(req).then(users => {
+    if (!users) return Promise.reject(errors.defaultError('There are not users availables'));
+    logger.info('Succsessfull users consult');
+    const response = serializer.serializeUsersResponse(users, req);
+    return Promise.resolve(response);
+  });
