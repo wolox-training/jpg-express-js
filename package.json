@@ -75,6 +75,7 @@
     "jsonwebtoken": "^8.5.1",
     "jwt-simple": "^0.5.1",
     "pg": "^7.4.1",
+    "request": "^2.88.0",
     "request-promise": "^4.2.4",
     "sequelize": "^5.10.1",
     "swagger-ui-express": "^4.0.7",
