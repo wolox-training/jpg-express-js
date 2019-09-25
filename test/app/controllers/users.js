@@ -5,7 +5,6 @@ const { mockUser } = require('../../mocks/users');
 const { factoryByModel } = require('../../factory/factory_by_models');
 
 const user = mockUser();
-
 factoryByModel('User');
 
 describe('POST /users', () => {

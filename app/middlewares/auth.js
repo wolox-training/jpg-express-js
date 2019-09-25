@@ -20,7 +20,7 @@ exports.admin = (req, res, next) => {
     const admin = tokenService.decodeToken(token);
     const query = { where: { email: admin.sub.email } };
     return userDB.findUsersWhere(query).then(resp => {
-      if (!resp.admin || resp.admin === null) return next(errors.notAuthError('Not authorized user'));
+      if (!resp.admin) return next(errors.notAuthError('Not authorized user'));
       return next();
     });
   } catch (ex) {
