@@ -30,8 +30,7 @@ exports.registerAdmin = user =>
     })
     .then(() => {
       logger.info('Succssesfull admin register');
-      return Promise.resolve({ admin: { name: user.name, email: user.email } });
-      // add serializer
+      return Promise.resolve(serializer.serializeRegisterAdminResponse(user));
     });
 
 exports.getAllUsers = req =>

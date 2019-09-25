@@ -26,3 +26,6 @@ exports.invalidToken = message => internalError(message, exports.INVALID_ACCSESS
 
 exports.NOT_FOUND_ERROR = 'not_found_error';
 exports.notFoundError = message => internalError(message, exports.NOT_FOUND_ERROR);
+
+exports.NOT_AUTHORIZED_ERROR = 'not_found_error';
+exports.notAuthError = message => internalError(message, exports.NOT_AUTHORIZED_ERROR);

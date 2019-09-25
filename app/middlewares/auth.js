@@ -14,13 +14,13 @@ exports.auth = (req, res, next) => {
 };
 
 exports.admin = (req, res, next) => {
-  const token = req.headers['x-access-token'] || req.headers.authorization;
+  const token = req.headers['x-access-token'] || req.headers.authorization || req.body.token;
   if (!token) return next(errors.invalidToken('No token available'));
   try {
     const admin = tokenService.decodeToken(token);
     const query = { where: { email: admin.sub.email } };
     return userDB.findUsersWhere(query).then(resp => {
-      if (!resp.admin || resp.admin === null) return next(errors.invalidData('Not authorized user'));
+      if (!resp.admin || resp.admin === null) return next(errors.notAuthError('Not authorized user'));
       return next();
     });
   } catch (ex) {

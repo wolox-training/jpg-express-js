@@ -8,3 +8,5 @@ exports.serializeUsersResponse = (allUsers, req) => {
   const currentPage = req.query.page || 0;
   return { users, total_pages: totalPages, current_page: currentPage };
 };
+
+exports.serializeRegisterAdminResponse = user => ({ admin: { name: user.name, email: user.email } });
