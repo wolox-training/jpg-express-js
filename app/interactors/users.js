@@ -3,6 +3,7 @@ const crypt = require('../services/encrypt');
 const errors = require('../errors');
 const token = require('../helpers/token');
 const logger = require('../logger');
+const serializer = require('../serializers/users');
 
 exports.singIn = user => {
   const query = { where: { email: user.email } };
@@ -18,3 +19,10 @@ exports.singIn = user => {
       return Promise.resolve({ token: token.createToken(user) });
     });
 };
+
+exports.getAllUsers = req =>
+  userDB.getAllUsers(req).then(users => {
+    if (!users) return Promise.reject(errors.notFoundError('There are not users availables'));
+    logger.info('Succsessfull users consult');
+    return Promise.resolve(serializer.serializeUsersResponse(users, req));
+  });

@@ -20,3 +20,9 @@ exports.userNotExistsError = message => internalError(message, exports.USER_NOT_
 
 exports.INVALID_DATA_ERROR = 'invalid_data_error';
 exports.invalidData = message => internalError(message, exports.INVALID_DATA_ERROR);
+
+exports.INVALID_ACCSESS_TOKEN = 'invalid_token_error';
+exports.invalidToken = message => internalError(message, exports.INVALID_ACCSESS_TOKEN);
+
+exports.NOT_FOUND_ERROR = 'not_found_error';
+exports.notFoundError = message => internalError(message, exports.NOT_FOUND_ERROR);

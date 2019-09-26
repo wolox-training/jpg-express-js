@@ -27,3 +27,11 @@ exports.singIn = (req, res, next) =>
       return res.status(200).send(response);
     })
     .catch(next);
+
+exports.getUsers = (req, res, next) => {
+  logger.info('Starting the user consult');
+  return interactor
+    .getAllUsers(req)
+    .then(response => res.status(200).send(response))
+    .catch(next);
+};

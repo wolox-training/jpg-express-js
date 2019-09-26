@@ -8,7 +8,9 @@ const statusCodes = {
   [errors.DEFAULT_ERROR]: 500,
   [errors.REQUEST_ERROR]: 500,
   [errors.USER_EXISTS_ERROR]: 409,
-  [errors.INVALID_DATA_ERROR]: 422
+  [errors.INVALID_DATA_ERROR]: 422,
+  [errors.INVALID_ACCSESS_TOKEN]: 401,
+  [errors.NOT_FOUND_ERROR]: 404
 };
 
 exports.handle = (error, req, res, next) => {
