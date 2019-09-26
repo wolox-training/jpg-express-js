@@ -1,6 +1,7 @@
 const rq = require('request-promise');
 const errors = require('../errors');
 const logger = require('../logger');
+const { Album } = require('../models');
 
 const { urlApi } = require('../../config').common.resources;
 
@@ -16,7 +17,7 @@ exports.getAlbums = () => {
   });
 };
 
-exports.getAlbumById = albumId => {
+exports.getPhotosByAlbumId = albumId => {
   const options = {
     method: 'GET',
     uri: `${urlApi}/photos?albumId=${albumId}`,
@@ -28,12 +29,25 @@ exports.getAlbumById = albumId => {
   });
 };
 
-exports.buyAlbumById = albumId => {
+exports.getAlbumById = albumId => {
   const options = {
     method: 'GET',
-    uri: `${urlApi}/photos?albumId=${albumId}`,
+    uri: `${urlApi}/albums/${albumId}`,
     json: true
   };
-  return Promise.resolve(rq(options));
-  // .then(res => console.log(res, '******* RES')));
+  return rq(options).catch(error => {
+    logger.error(error);
+    return Promise.reject(errors.requestError('Bad request'));
+  });
 };
+
+exports.buyAlbum = album =>
+  Album.create({ providerId: album.userId, title: album.title })
+    .then(resp => {
+      logger.info('album purchased successfully');
+      return Promise.resolve({ purchased: resp });
+    })
+    .catch(error => {
+      logger.error(error);
+      return Promise.reject(errors.requestError('Bad requesttt'));
+    });
