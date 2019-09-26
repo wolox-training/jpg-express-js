@@ -26,3 +26,16 @@ exports.getAlbumById = (req, res, next) => {
     })
     .catch(next);
 };
+
+exports.buyAlbum = (req, res, next) => {
+  logger.info('starting the photo query');
+  const albumId = req.params.id;
+  return albumService
+    .buyAlbumById(albumId)
+    .then(response => {
+      if (!response.length) return Promise.reject(errors.emptyData('data unavailable'));
+      logger.info('album purchased successfully');
+      return res.send({ response });
+    })
+    .catch(next);
+};

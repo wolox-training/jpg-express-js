@@ -27,3 +27,13 @@ exports.getAlbumById = albumId => {
     return Promise.reject(errors.requestError('Bad request'));
   });
 };
+
+exports.buyAlbumById = albumId => {
+  const options = {
+    method: 'GET',
+    uri: `${urlApi}/photos?albumId=${albumId}`,
+    json: true
+  };
+  return Promise.resolve(rq(options));
+  // .then(res => console.log(res, '******* RES')));
+};
