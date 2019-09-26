@@ -144,14 +144,14 @@ describe('POST /admin/users', () => {
     });
   });
 
-  it('should be a successfull new admin register', () =>
+  it.only('should be a successfull new admin register', () =>
     request(app)
       .post('/users/sessions')
       .send({ email: mockEmail, password: mockPass })
       .then(response =>
         request(app)
           .post('/admin/users')
-          .set('x-access-token', response.body.token)
+          .set({ 'x-access-token': response.body.token })
           .send(user)
       )
       .then(response => {
