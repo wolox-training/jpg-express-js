@@ -6,14 +6,11 @@ exports.auth = (type = false) => (req, res, next) => {
   const token = req.headers['x-access-token'] || req.headers.authorization || req.body.token;
   if (!token) return next(errors.invalidToken('No token available'));
   try {
-    if (!type) {
-      tokenService.decodeToken(token);
-      return next();
-    }
-    const admin = tokenService.decodeToken(token);
-    const query = { where: { email: admin.sub.email } };
+    const user = tokenService.decodeToken(token);
+    const query = { where: { email: user.sub.email } };
     return userDB.findUsersWhere(query).then(resp => {
-      if (!resp.admin) return next(errors.notAuthError('Not authorized user'));
+      if (type && !resp.admin) return next(errors.notAuthError('Not authorized user'));
+      req.user = resp.dataValues;
       return next();
     });
   } catch (ex) {
