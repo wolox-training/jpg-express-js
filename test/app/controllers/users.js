@@ -151,7 +151,7 @@ describe('POST /admin/users', () => {
       .then(response =>
         request(app)
           .post('/admin/users')
-          .set({ 'x-access-token': response.body.token })
+          .set('x-access-token', response.body.token)
           .send(user)
       )
       .then(response => {
@@ -167,7 +167,7 @@ describe('POST /admin/users', () => {
         .then(response =>
           request(app)
             .post('/admin/users')
-            .set({ 'x-access-token': response.body.token })
+            .set('x-access-token', response.body.token)
             .send(user)
         )
         .then(response => {
