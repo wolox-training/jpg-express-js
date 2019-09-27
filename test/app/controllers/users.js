@@ -144,7 +144,7 @@ describe('POST /admin/users', () => {
     });
   });
 
-  it.only('should be a successfull new admin register', () =>
+  it('should be a successfull new admin register', () =>
     request(app)
       .post('/users/sessions')
       .send({ email: mockEmail, password: mockPass })
