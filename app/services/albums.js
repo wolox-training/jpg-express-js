@@ -37,7 +37,7 @@ exports.getAlbumById = albumId => {
   };
   return rq(options).catch(error => {
     logger.error(error);
-    return Promise.reject(errors.requestError('Bad request'));
+    return Promise.reject(errors.requestError('album does not exist'));
   });
 };
 
