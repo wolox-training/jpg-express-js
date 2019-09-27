@@ -21,7 +21,7 @@
     "prestart": "npm run lint",
     "migrations": "sequelize db:migrate",
     "migrations-test": "NODE_ENV=testing sequelize db:migrate",
-    "start": "nodemon --inspect server.js"
+    "start": "node server.js"
   },
   "cacheDirectories": [
     "node_modules"
@@ -68,12 +68,14 @@
     "express": "^4.16.2",
     "express-paginate": "^1.0.0",
     "express-pagination-middleware": "^1.0.2",
+    "express-session": "^1.16.2",
     "express-validator": "^6.2.0",
     "express-wolox-logger": "1.1.0",
     "factory-girl": "^5.0.4",
     "jsonwebtoken": "^8.5.1",
     "jwt-simple": "^0.5.1",
     "pg": "^7.4.1",
+    "request": "^2.88.0",
     "request-promise": "^4.2.4",
     "sequelize": "^5.10.1",
     "swagger-ui-express": "^4.0.7",

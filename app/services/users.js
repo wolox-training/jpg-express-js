@@ -15,3 +15,15 @@ exports.validateUser = user => {
     return Promise.reject(errors.databaseError(error.message));
   });
 };
+
+exports.registerAdmin = user =>
+  User.create({ ...user, admin: true }).catch(error => {
+    logger.error(error);
+    return Promise.reject(errors.databaseError(error.message));
+  });
+
+exports.becomeAdmin = user =>
+  User.update({ admin: true }, { where: { email: user.email } }).catch(error => {
+    logger.error(error);
+    return Promise.reject(errors.databaseError(error.message));
+  });
