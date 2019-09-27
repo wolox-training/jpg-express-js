@@ -2,16 +2,18 @@
 module.exports = {
   up: (queryInterface, Sequelize) =>
     queryInterface.createTable('albums', {
-      id: {
+      user_id: {
         allowNull: false,
-        autoIncrement: true,
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      provider_id: {
+      album_id: {
+        allowNull: false,
+        primaryKey: true,
         type: Sequelize.INTEGER
       },
       title: {
+        allowNull: false,
         type: Sequelize.STRING
       },
       created_at: {

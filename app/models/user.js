@@ -9,14 +9,7 @@ module.exports = (sequelize, DataTypes) => {
       password: { type: DataTypes.STRING, allowNull: false, validate: { min: 8 } },
       admin: { type: DataTypes.BOOLEAN, allowNull: true }
     },
-    { tableName: 'albums', underscored: true, timestamps: true }
+    { tableName: 'users', underscored: true, timestamps: true }
   );
-  // User.associate = models => {
-  //   User.belongsToMany(models.Album, {
-  //     through: 'UsersAlbum',
-  //     foreignKey: 'album_id',
-  //     as: 'album'
-  //   });
-  // };
   return User;
 };

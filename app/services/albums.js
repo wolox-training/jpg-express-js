@@ -41,13 +41,13 @@ exports.getAlbumById = albumId => {
   });
 };
 
-exports.buyAlbum = album =>
-  Album.create({ providerId: album.userId, title: album.title })
-    .then(resp => {
-      logger.info('album purchased successfully');
-      return Promise.resolve({ purchased: resp });
-    })
+exports.buyAlbum = album => {
+  console.log(album, 'album********');
+  return Album.create(album)
+    .then(resp => Promise.resolve({ purchased: resp }))
     .catch(error => {
+      console.log(error, 'error********');
       logger.error(error);
-      return Promise.reject(errors.requestError('Bad requesttt'));
+      return Promise.reject(errors.requestError('database error'));
     });
+};
