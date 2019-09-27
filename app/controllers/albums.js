@@ -29,7 +29,6 @@ exports.getPhotosByAlbumId = (req, res, next) => {
 };
 
 exports.buyAlbum = (req, res, next) => {
-  console.log(req.user, '**********user ');
   logger.info('starting the album query');
   return interactor
     .buyAlbum(req)

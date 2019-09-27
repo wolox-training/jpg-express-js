@@ -41,13 +41,10 @@ exports.getAlbumById = albumId => {
   });
 };
 
-exports.buyAlbum = album => {
-  console.log(album, 'album********');
-  return Album.create(album)
+exports.buyAlbum = album =>
+  Album.create(album)
     .then(resp => Promise.resolve({ purchased: resp }))
     .catch(error => {
-      console.log(error, 'error********');
       logger.error(error);
-      return Promise.reject(errors.requestError('database error'));
+      return Promise.reject(errors.databaseError('album not purchased'));
     });
-};
