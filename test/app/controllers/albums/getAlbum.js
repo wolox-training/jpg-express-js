@@ -1,8 +1,9 @@
 const { factory } = require('factory-girl');
 const request = require('supertest');
 const nock = require('nock');
-const app = require('../../../app');
-const { mockAlbum } = require('../../mocks/albums');
+const app = require('../../../../app');
+const { mockAlbum } = require('../../../mocks/albums');
+const { mockUser2 } = require('../../../mocks/users');
 
 describe('POST /albums/:id', () => {
   const password = '$2b$10$q0/nJGRvSyZz3i7fgvTY2OwMl4MPozMQI/62Bkz5F88tSl.3Y2W4u';
@@ -43,16 +44,18 @@ describe('POST /albums/:id', () => {
       });
   });
 
-  it('should fail a shop due to a non existent book', () =>
-    request(app)
-      .post('/users/sessions')
-      .send({ email: mockEmail, password: mockPass })
-      .then(response =>
-        request(app)
-          .post('/albums/')
-          .set('x-access-token', response.body.token)
-      )
-      .then(response => {
-        expect(response.statusCode).toBe(404);
-      }));
+  it('should be fail album query due to a non existent album', () =>
+    factory.create('User', { ...mockUser2, password }).then(() =>
+      request(app)
+        .post('/users/sessions')
+        .send({ email: mockUser2.email, password: mockPass })
+        .then(response =>
+          request(app)
+            .post('/albums/')
+            .set({ 'x-access-token': response.body.token })
+        )
+        .then(response => {
+          expect(response.statusCode).toBe(401);
+        })
+    ));
 });
