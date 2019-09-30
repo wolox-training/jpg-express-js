@@ -1,0 +1,105 @@
+<html><head><link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" /><script src="https://code.jquery.com/jquery-1.12.2.min.js"></script><script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script><style> pre { width: 95%; } </style></head><body><div class="container"><div class="jumbotron"><h1>Users</h1></div><div class="panel panel-default"><div class="panel-heading" role="tab" id="heading-users-GET"><h4 class="panel-title"><a role="button" data-toggle="collapse" data-parent="#accordion" aria-expanded="true" aria-controls="collapse-users-GET" href="#collapse-users-GET">GET /users</a></h4></div><div id="collapse-users-GET" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading-users-GET"><div class="panel-body"><h4>Request Data</h4><div class="container"><h5>Headers</h5><pre>{
+  "x-access-token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOnsiZW1haWwiOiJjYW1pbG9Ad29sb3guY28iLCJwYXNzd29yZCI6IjEyMzQ1Njc4In0sImlhdCI6MTU2OTg3NzYyMywiZXhwIjoxNTcxMDg3MjIzfQ.tVTEH5mRVjanhXoaPJSH5hRWvuIPlO0_oa0ljMLKQOY"
+}</pre></div></div><div class="panel-body"><h4>Response Data</h4><div class="container"><h5>Status: 200</h5><h5>Headers</h5><pre>{
+  "x-access-token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOnsiZW1haWwiOiJjYW1pbG9Ad29sb3guY28iLCJwYXNzd29yZCI6IjEyMzQ1Njc4In0sImlhdCI6MTU2OTg3NzYyMywiZXhwIjoxNTcxMDg3MjIzfQ.tVTEH5mRVjanhXoaPJSH5hRWvuIPlO0_oa0ljMLKQOY"
+}</pre><h5>Body</h5><pre>{
+  "users": [
+    {
+      "name": "camilo",
+      "last_name": "perez",
+      "email": "camilo@wolox.co"
+    }
+  ],
+  "total_pages": 0,
+  "current_page": 0
+}</pre></div></div></div></div><div class="panel panel-default"><div class="panel-heading" role="tab" id="heading-users-sessions-POST"><h4 class="panel-title"><a role="button" data-toggle="collapse" data-parent="#accordion" aria-expanded="true" aria-controls="collapse-users-sessions-POST" href="#collapse-users-sessions-POST">POST /users/sessions</a></h4></div><div id="collapse-users-sessions-POST" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading-users-sessions-POST"><div class="panel-body"><h4>Request Data</h4><div class="container"><h5>Headers</h5><pre>{
+  "content-type": "application/json",
+  "content-length": 48
+}</pre><h5>Body</h5><pre>{
+  "email": "david@wolox.ar",
+  "password": "12345678"
+}</pre></div></div><div class="panel-body"><h4>Response Data</h4><div class="container"><h5>Status: 200</h5><h5>Headers</h5><pre>{
+  "content-type": "application/json",
+  "content-length": 48
+}</pre><h5>Body</h5><pre>{
+  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOnsiZW1haWwiOiJkYXZpZEB3b2xveC5hciIsInBhc3N3b3JkIjoiMTIzNDU2NzgifSwiaWF0IjoxNTY5ODc3NjIzLCJleHAiOjE1NzEwODcyMjN9.xPeu68-iqgkfNUY-LwgEEE8lk4tA5PnhhFoX3VFk-Mg"
+}</pre></div></div></div></div><div class="panel panel-default"><div class="panel-heading" role="tab" id="heading-users-sessions-POST"><h4 class="panel-title"><a role="button" data-toggle="collapse" data-parent="#accordion" aria-expanded="true" aria-controls="collapse-users-sessions-POST" href="#collapse-users-sessions-POST">POST /users/sessions</a></h4></div><div id="collapse-users-sessions-POST" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading-users-sessions-POST"><div class="panel-body"><h4>Request Data</h4><div class="container"><h5>Headers</h5><pre>{
+  "content-type": "application/json",
+  "content-length": 47
+}</pre><h5>Body</h5><pre>{
+  "email": "fail@wolox.co",
+  "password": "12345678"
+}</pre></div></div><div class="panel-body"><h4>Response Data</h4><div class="container"><h5>Status: 409</h5><h5>Headers</h5><pre>{
+  "content-type": "application/json",
+  "content-length": 47
+}</pre><h5>Body</h5><pre>{
+  "message": "user does not exist",
+  "internal_code": "user_exists_error"
+}</pre></div></div></div></div><div class="panel panel-default"><div class="panel-heading" role="tab" id="heading-users-sessions-POST"><h4 class="panel-title"><a role="button" data-toggle="collapse" data-parent="#accordion" aria-expanded="true" aria-controls="collapse-users-sessions-POST" href="#collapse-users-sessions-POST">POST /users/sessions</a></h4></div><div id="collapse-users-sessions-POST" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading-users-sessions-POST"><div class="panel-body"><h4>Request Data</h4><div class="container"><h5>Headers</h5><pre>{
+  "content-type": "application/json",
+  "content-length": 45
+}</pre><h5>Body</h5><pre>{
+  "email": "david@wolox.ar",
+  "password": "12345"
+}</pre></div></div><div class="panel-body"><h4>Response Data</h4><div class="container"><h5>Status: 422</h5><h5>Headers</h5><pre>{
+  "content-type": "application/json",
+  "content-length": 45
+}</pre><h5>Body</h5><pre>{
+  "message": [
+    "invalid password"
+  ],
+  "internal_code": "invalid_data_error"
+}</pre></div></div></div></div><div class="panel panel-default"><div class="panel-heading" role="tab" id="heading-users-POST"><h4 class="panel-title"><a role="button" data-toggle="collapse" data-parent="#accordion" aria-expanded="true" aria-controls="collapse-users-POST" href="#collapse-users-POST">POST /users</a></h4></div><div id="collapse-users-POST" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading-users-POST"><div class="panel-body"><h4>Request Data</h4><div class="container"><h5>Headers</h5><pre>{
+  "content-type": "application/json",
+  "content-length": 98
+}</pre><h5>Body</h5><pre>{
+  "name": "andres",
+  "last_name": "Gomez",
+  "email": "andres@wolox.co",
+  "password": "12345678",
+  "admin": true
+}</pre></div></div><div class="panel-body"><h4>Response Data</h4><div class="container"><h5>Status: 201</h5><h5>Headers</h5><pre>{
+  "content-type": "application/json",
+  "content-length": 98
+}</pre><h5>Body</h5><pre>{
+  "id": 1,
+  "name": "andres",
+  "email": "andres@wolox.co",
+  "password": "$2b$10$tVpfRKYLoJNPAKaMSk91duBRwo2wYpw3kENZLuCl.sL0OvMWo9xLS",
+  "admin": true,
+  "lastName": "Gomez",
+  "updatedAt": "2019-09-30T21:07:04.077Z",
+  "createdAt": "2019-09-30T21:07:04.077Z"
+}</pre></div></div></div></div><div class="panel panel-default"><div class="panel-heading" role="tab" id="heading-users-POST"><h4 class="panel-title"><a role="button" data-toggle="collapse" data-parent="#accordion" aria-expanded="true" aria-controls="collapse-users-POST" href="#collapse-users-POST">POST /users</a></h4></div><div id="collapse-users-POST" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading-users-POST"><div class="panel-body"><h4>Request Data</h4><div class="container"><h5>Headers</h5><pre>{
+  "content-type": "application/json",
+  "content-length": 98
+}</pre><h5>Body</h5><pre>{
+  "name": "andres",
+  "last_name": "Gomez",
+  "email": "andres@wolox.co",
+  "password": "12345678",
+  "admin": true
+}</pre></div></div><div class="panel-body"><h4>Response Data</h4><div class="container"><h5>Status: 409</h5><h5>Headers</h5><pre>{
+  "content-type": "application/json",
+  "content-length": 98
+}</pre><h5>Body</h5><pre>{
+  "message": "user already exists",
+  "internal_code": "user_exists_error"
+}</pre></div></div></div></div><div class="panel panel-default"><div class="panel-heading" role="tab" id="heading-users-POST"><h4 class="panel-title"><a role="button" data-toggle="collapse" data-parent="#accordion" aria-expanded="true" aria-controls="collapse-users-POST" href="#collapse-users-POST">POST /users</a></h4></div><div id="collapse-users-POST" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading-users-POST"><div class="panel-body"><h4>Request Data</h4><div class="container"><h5>Headers</h5><pre>{
+  "content-type": "application/json",
+  "content-length": 95
+}</pre><h5>Body</h5><pre>{
+  "name": "andres",
+  "last_name": "Gomez",
+  "email": "andres@wolox.co",
+  "password": "12345",
+  "admin": true
+}</pre></div></div><div class="panel-body"><h4>Response Data</h4><div class="container"><h5>Status: 422</h5><h5>Headers</h5><pre>{
+  "content-type": "application/json",
+  "content-length": 95
+}</pre><h5>Body</h5><pre>{
+  "message": [
+    "incorrect password"
+  ],
+  "internal_code": "invalid_data_error"
+}</pre></div></div></div></div></div></body></html>

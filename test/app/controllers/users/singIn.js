@@ -1,42 +1,69 @@
-const { factory } = require('factory-girl');
 const request = require('supertest');
+const dictum = require('dictum.js');
 const app = require('../../../../app');
-const { mockUser } = require('../../../mocks/users');
-const { factoryByModel } = require('../../../factory/factory_by_models');
-
-factoryByModel('User');
 
 describe('POST /users/sessions', () => {
-  const password = '$2b$10$q0/nJGRvSyZz3i7fgvTY2OwMl4MPozMQI/62Bkz5F88tSl.3Y2W4u';
-  it('should return a token for a valid user', () =>
-    factory.create('User', { password }).then(userIn => {
-      const us = userIn.dataValues;
-      const mockReq = {
-        password: '12345678',
-        email: us.email
-      };
-      return request(app)
-        .post('/users/sessions')
-        .send(mockReq)
-        .expect(200);
-    }));
+  const userTest = {
+    name: 'David',
+    last_name: 'Montoya',
+    email: 'david@wolox.ar',
+    password: '12345678'
+  };
 
-  it('should fail if a user does not exist', () =>
-    request(app)
-      .post('/users/sessions')
-      .send(mockUser)
-      .expect(409));
+  test('Should be a successfull Log in', () => {
+    const agent = request(app);
+    return agent
+      .post('/users')
+      .send(userTest)
+      .then(() =>
+        agent
+          .post('/users/sessions')
+          .send({
+            email: userTest.email,
+            password: userTest.password
+          })
+          .then(response => {
+            expect(response.statusCode).toBe(200);
+            dictum.chai(response, 'Test user-log in');
+          })
+      );
+  });
 
-  it('should fail if password is incorrect', () =>
-    factory.create('User', { password }).then(userIn => {
-      const us = userIn.dataValues;
-      const mockReq = {
-        password: '12345679',
-        email: us.email
-      };
-      return request(app)
-        .post('/users/sessions')
-        .send(mockReq)
-        .expect(422);
-    }));
+  test('Test log-in fail due to wrong email. It should respond with 403', () => {
+    const agent = request(app);
+    return agent
+      .post('/users')
+      .send(userTest)
+      .then(() =>
+        agent
+          .post('/users/sessions')
+          .send({
+            email: 'fail@wolox.co',
+            password: userTest.password
+          })
+          .then(response => {
+            expect(response.statusCode).toBe(409);
+            dictum.chai(response, 'Test log-in fail due to wrong email');
+          })
+      );
+  });
+
+  test('Test log-in fail due to wrong password. It should respond with 403', () => {
+    const agent = request(app);
+    return agent
+      .post('/users')
+      .send(userTest)
+      .then(() =>
+        agent
+          .post('/users/sessions')
+          .send({
+            email: userTest.email,
+            password: '12345'
+          })
+          .then(response => {
+            expect(response.statusCode).toBe(422);
+            dictum.chai(response, 'Test log-in fail due to wrong password');
+          })
+      );
+  });
 });
