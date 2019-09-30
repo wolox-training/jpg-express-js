@@ -33,7 +33,7 @@ exports.buyAlbum = (req, res, next) => {
   return interactor
     .buyAlbum(req)
     .then(response => {
-      logger.info('photos purchased successfully');
+      logger.info('album purchased successfully');
       return res.send(response);
     })
     .catch(next);

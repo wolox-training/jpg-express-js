@@ -1,26 +1,25 @@
 const { factory } = require('factory-girl');
 const request = require('supertest');
 const app = require('../../../app');
-const { mockUser } = require('../../mocks/users');
+const { mockUser, mockUser2 } = require('../../mocks/users');
 const { factoryByModel } = require('../../factory/factory_by_models');
 
-const user = mockUser();
 factoryByModel('User');
 
 describe('POST /users', () => {
-  it('shuld be a successfull sing-in', () =>
+  it('should be a successfull sing-up', () =>
     request(app)
       .post('/users')
-      .send(user)
+      .send(mockUser2)
       .expect(201));
 
   it('should fail if a email already exist', () =>
     factory
-      .create('User', user)
+      .create('User', mockUser)
       .then(() =>
         request(app)
           .post('/users')
-          .send(user)
+          .send(mockUser)
       )
       .then(res => {
         expect(res.statusCode).toBe(409);
@@ -29,11 +28,11 @@ describe('POST /users', () => {
   it('should fail if a user insert a bad password', () =>
     request(app)
       .post('/users')
-      .send({ ...user, password: '123' })
+      .send({ ...mockUser, password: '123' })
       .expect(422));
 
   it('should fail due to null parameters', () => {
-    const userIn = { email: user.email, password: user.password };
+    const userIn = { email: mockUser.email, password: mockUser.password };
     return request(app)
       .post('/users')
       .send(userIn)
@@ -59,7 +58,7 @@ describe('POST /users/sessions', () => {
   it('should fail if a user does not exist', () =>
     request(app)
       .post('/users/sessions')
-      .send(user)
+      .send(mockUser)
       .expect(409));
 
   it('should fail if password is incorrect', () =>
@@ -97,7 +96,7 @@ describe('GET /users', () => {
           .set({ 'x-access-token': response.body.token })
       )
       .then(response => {
-        expect(200);
+        expect(response.statusCode).toBe(200);
         expect(response.body).toHaveProperty('users');
       }));
 
@@ -151,8 +150,8 @@ describe('POST /admin/users', () => {
       .then(response =>
         request(app)
           .post('/admin/users')
-          .set('x-access-token', response.body.token)
-          .send(user)
+          .set({ 'x-access-token': response.body.token })
+          .send(mockUser)
       )
       .then(response => {
         expect(response.statusCode).toBe(201);
@@ -160,7 +159,7 @@ describe('POST /admin/users', () => {
       }));
 
   it('should be a successfull register of an existent user', () =>
-    factory.create('User', user).then(() =>
+    factory.create('User', mockUser).then(() =>
       request(app)
         .post('/users/sessions')
         .send({ email: mockEmail, password: mockPass })
@@ -168,7 +167,7 @@ describe('POST /admin/users', () => {
           request(app)
             .post('/admin/users')
             .set('x-access-token', response.body.token)
-            .send(user)
+            .send(mockUser)
         )
         .then(response => {
           expect(response.statusCode).toBe(201);
@@ -180,13 +179,13 @@ describe('POST /admin/users', () => {
     request(app)
       .post('/admin/users')
       .set({ 'x-access-token': 'bad-token' })
-      .send(user)
+      .send(mockUser)
       .then(response => {
         expect(response.statusCode).toBe(401);
       }));
 
   it('should fail for user permissons', () =>
-    factory.create('User', { ...user, email: 'test@wolox.co', password }).then(() =>
+    factory.create('User', { ...mockUser, email: 'test@wolox.co', password }).then(() =>
       request(app)
         .post('/users/sessions')
         .send({ email: 'test@wolox.co', password: mockPass })
@@ -194,7 +193,7 @@ describe('POST /admin/users', () => {
           request(app)
             .post('/admin/users')
             .set({ 'x-access-token': response.body.token })
-            .send({ ...user, email: 'test2@wolox.co' })
+            .send({ ...mockUser, email: 'test2@wolox.co' })
         )
         .then(response => {
           expect(response.statusCode).toBe(401);
