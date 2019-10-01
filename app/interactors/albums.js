@@ -1,4 +1,5 @@
 const albums = require('../services/albums');
+const albumDB = require('../services/albumDB');
 const errors = require('../errors');
 const serializer = require('../serializers/albums');
 const logger = require('../logger');
@@ -8,7 +9,7 @@ exports.buyAlbum = req => {
   const userId = req.user.id;
   return albums.getAlbumById(albumId).then(response => {
     if (!response || response === {}) return Promise.reject(errors.notFoundError('album not exist'));
-    return albums
+    return albumDB
       .buyAlbum({ albumId, userId, title: response.title })
       .then(() => Promise.resolve(response))
       .catch(() => Promise.reject(errors.requestError('album already purchased')));
