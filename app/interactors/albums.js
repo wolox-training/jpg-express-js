@@ -20,7 +20,7 @@ exports.getPurchasedAlbums = req => {
   const { userId } = req.params;
   if (!req.user.admin && req.user.id !== parseInt(userId))
     return Promise.reject(errors.notAuthError('user dont have permissons'));
-  return albums.getPurchasedAlbums(userId).then(response => {
+  return albumDB.getPurchasedAlbums(userId).then(response => {
     if (!response.length)
       return Promise.reject(errors.notFoundError('user dont have purchased albums already'));
     logger.info('Succssesfull albums query');
