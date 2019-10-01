@@ -1,5 +1,4 @@
 const request = require('supertest');
-const dictum = require('dictum.js');
 const app = require('../../../../app');
 
 describe('POST /users/sessions', () => {
@@ -24,7 +23,6 @@ describe('POST /users/sessions', () => {
           })
           .then(response => {
             expect(response.statusCode).toBe(200);
-            dictum.chai(response, 'Test user-log in');
           })
       );
   });
@@ -43,7 +41,6 @@ describe('POST /users/sessions', () => {
           })
           .then(response => {
             expect(response.statusCode).toBe(409);
-            dictum.chai(response, 'Test log-in fail due to wrong email');
           })
       );
   });
@@ -62,7 +59,6 @@ describe('POST /users/sessions', () => {
           })
           .then(response => {
             expect(response.statusCode).toBe(422);
-            dictum.chai(response, 'Test log-in fail due to wrong password');
           })
       );
   });

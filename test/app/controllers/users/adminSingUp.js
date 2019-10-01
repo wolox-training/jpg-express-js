@@ -1,5 +1,4 @@
 const request = require('supertest');
-const dictum = require('dictum.js');
 const app = require('../../../../app');
 const { User } = require('../../../../app/models');
 
@@ -31,10 +30,7 @@ describe('POST /admin/users', () => {
             password: '12345678'
           })
       )
-      .then(response => {
-        dictum.chai(response, 'shuld be a succes post');
-        return expect(response.statusCode).toBe(201);
-      }));
+      .then(response => expect(response.statusCode).toBe(201)));
 
   test('Should fail due to no admin user', () =>
     User.create({
@@ -61,8 +57,5 @@ describe('POST /admin/users', () => {
             password: '12345678'
           })
       )
-      .then(response => {
-        dictum.chai(response, 'should fail due to not admin');
-        return expect(response.statusCode).toBe(401);
-      }));
+      .then(response => expect(response.statusCode).toBe(401)));
 });

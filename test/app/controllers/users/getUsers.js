@@ -1,5 +1,4 @@
 const request = require('supertest');
-const dictum = require('dictum.js');
 const app = require('../../../../app');
 
 describe('GET /users', () => {
@@ -28,10 +27,7 @@ describe('GET /users', () => {
             return agent
               .get('/users')
               .set('x-access-token', response.body.token)
-              .then(res => {
-                dictum.chai(res, 'Test get users list. It should respond with code 200');
-                return expect(res.statusCode).toBe(200);
-              });
+              .then(res => expect(res.statusCode).toBe(200));
           });
       }));
 });

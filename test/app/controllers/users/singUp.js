@@ -1,5 +1,4 @@
 const request = require('supertest');
-const dictum = require('dictum.js');
 const app = require('../../../../app');
 
 describe('POST /users', () => {
@@ -17,7 +16,6 @@ describe('POST /users', () => {
       .send(testUser)
       .then(response => {
         expect(response.statusCode).toBe(201);
-        dictum.chai(response, 'Test successful sign up');
       }));
 
   test('Should fail because the email already exists', () =>
@@ -30,7 +28,6 @@ describe('POST /users', () => {
           .send(testUser)
           .then(response => {
             expect(response.statusCode).toBe(409);
-            dictum.chai(response, 'Test used email');
           })
       ));
 
@@ -40,6 +37,5 @@ describe('POST /users', () => {
       .send({ ...testUser, password: '12345' })
       .then(response => {
         expect(response.statusCode).toBe(422);
-        dictum.chai(response, 'Test invalid password');
       }));
 });
