@@ -49,3 +49,14 @@ exports.getPurchasedAlbums = (req, res, next) => {
     })
     .catch(next);
 };
+
+exports.getPhotosPurchasedAlbum = (req, res, next) => {
+  logger.info('starting the album query');
+  return interactor
+    .getPhotosPurchasedAlbum(req)
+    .then(response => {
+      logger.info('succesfull purchased albums query');
+      return res.status(200).send(response);
+    })
+    .catch(next);
+};
