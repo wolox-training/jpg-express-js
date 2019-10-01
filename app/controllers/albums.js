@@ -10,7 +10,7 @@ exports.getAlbums = (req, res, next) => {
     .then(response => {
       if (!response.length) return Promise.reject(errors.emptyData('data unavailable'));
       logger.info('albums sended successfully');
-      return res.send(response);
+      return res.status(200).send(response);
     })
     .catch(next);
 };
@@ -23,7 +23,7 @@ exports.getPhotosByAlbumId = (req, res, next) => {
     .then(response => {
       if (!response.length) return Promise.reject(errors.emptyData('data unavailable'));
       logger.info('photos sended successfully');
-      return res.send(response);
+      return res.status(200).send(response);
     })
     .catch(next);
 };
@@ -34,7 +34,18 @@ exports.buyAlbum = (req, res, next) => {
     .buyAlbum(req)
     .then(response => {
       logger.info('album purchased successfully');
-      return res.send(response);
+      return res.status(200).send(response);
+    })
+    .catch(next);
+};
+
+exports.getPurchasedAlbums = (req, res, next) => {
+  logger.info('starting the album query');
+  return interactor
+    .getPurchasedAlbums(req)
+    .then(response => {
+      logger.info('succesfull purchased albums query');
+      return res.status(200).send(response);
     })
     .catch(next);
 };
