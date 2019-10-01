@@ -1,6 +1,5 @@
 const request = require('supertest');
 const nock = require('nock');
-const dictum = require('dictum.js');
 const app = require('../../../../app');
 const { User } = require('../../../../app/models');
 
@@ -39,10 +38,7 @@ describe('POST /albums/:id', () => {
   test('Should be a successfull album purchase', () =>
     createUserAndLogin()
       .then(logIn => agent.post('/albums/2/').set('x-access-token', logIn.body.token))
-      .then(response => {
-        dictum.chai(response, 'Test buying album');
-        return expect(response.statusCode).toBe(200);
-      }));
+      .then(response => expect(response.statusCode).toBe(200)));
 
   test('Should fail because the album is already purchased', () =>
     createUserAndLogin()
@@ -52,8 +48,5 @@ describe('POST /albums/:id', () => {
           .set('x-access-token', logIn.body.token)
           .then(() => agent.post('/albums/2/').set('x-access-token', logIn.body.token))
       )
-      .then(response => {
-        dictum.chai(response, 'Test buying the same album two times');
-        return expect(response.body).toHaveProperty('message');
-      }));
+      .then(response => expect(response.body).toHaveProperty('message')));
 });
