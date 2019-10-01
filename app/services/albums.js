@@ -1,7 +1,6 @@
 const rq = require('request-promise');
 const errors = require('../errors');
 const logger = require('../logger');
-const { Album } = require('../models');
 
 const { urlApi } = require('../../config').common.resources;
 
@@ -40,11 +39,3 @@ exports.getAlbumById = albumId => {
     return Promise.reject(errors.notFoundError('album does not exist'));
   });
 };
-
-exports.buyAlbum = album =>
-  Album.create(album)
-    .then(resp => Promise.resolve({ purchased: resp }))
-    .catch(error => {
-      logger.error(error);
-      return Promise.reject(errors.databaseError('album not purchased'));
-    });
