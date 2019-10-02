@@ -9,10 +9,7 @@ module.exports = (sequelize, DataTypes) => {
       password: { type: DataTypes.STRING, allowNull: false, validate: { min: 8 } },
       admin: { type: DataTypes.BOOLEAN, allowNull: true }
     },
-    {
-      tableName: 'users',
-      underscored: true
-    }
+    { tableName: 'users', underscored: true, timestamps: true }
   );
   return User;
 };

@@ -16,7 +16,7 @@ exports.getAlbums = () => {
   });
 };
 
-exports.getAlbumById = albumId => {
+exports.getPhotosByAlbumId = albumId => {
   const options = {
     method: 'GET',
     uri: `${urlApi}/photos?albumId=${albumId}`,
@@ -25,5 +25,17 @@ exports.getAlbumById = albumId => {
   return rq(options).catch(error => {
     logger.error(error);
     return Promise.reject(errors.requestError('Bad request'));
+  });
+};
+
+exports.getAlbumById = albumId => {
+  const options = {
+    method: 'GET',
+    uri: `${urlApi}/albums/${albumId}`,
+    json: true
+  };
+  return rq(options).catch(error => {
+    logger.error(error);
+    return Promise.reject(errors.notFoundError('album does not exist'));
   });
 };

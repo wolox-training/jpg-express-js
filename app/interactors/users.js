@@ -3,7 +3,6 @@ const crypt = require('../services/encrypt');
 const errors = require('../errors');
 const token = require('../helpers/token');
 const logger = require('../logger');
-const userService = require('../services/users');
 const serializer = require('../serializers/users');
 
 exports.singIn = user => {
@@ -22,11 +21,11 @@ exports.singIn = user => {
 };
 
 exports.registerAdmin = user =>
-  userService
+  userDB
     .validateUser(user)
     .then(response => {
-      if (!response) return userService.registerAdmin(user);
-      return userService.becomeAdmin(user);
+      if (!response) return userDB.registerAdmin(user);
+      return userDB.becomeAdmin(user);
     })
     .then(() => {
       logger.info('Succssesfull admin register');
