@@ -11,7 +11,7 @@ exports.buyAlbum = album =>
     });
 
 exports.getPurchasedAlbums = userId => {
-  const query = { where: { user_id: userId } };
+  const query = { where: { userId } };
   return Album.findAll(query).catch(error => {
     logger.error(error);
     return Promise.reject(errors.databaseError(error.message));

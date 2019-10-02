@@ -24,6 +24,6 @@ exports.getPurchasedAlbums = req => {
     if (!response.length)
       return Promise.reject(errors.notFoundError('user dont have purchased albums already'));
     logger.info('Succssesfull albums query');
-    return Promise.resolve(serializer.albumPurchasedResponse(response, userId));
+    return serializer.albumPurchasedResponse(response, userId);
   });
 };
