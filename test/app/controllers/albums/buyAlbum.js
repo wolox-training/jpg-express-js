@@ -28,6 +28,8 @@ const mockResponse = {
 };
 
 describe('POST /albums/:id', () => {
+  afterAll(() => nock.restore());
+
   beforeEach(() => {
     nock('https://jsonplaceholder.typicode.com')
       .get('/albums/2')

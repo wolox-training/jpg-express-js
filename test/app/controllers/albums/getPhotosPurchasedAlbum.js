@@ -1,41 +1,73 @@
 const request = require('supertest');
+const nock = require('nock');
 const app = require('../../../../app');
-const helper = require('../../testHelper');
+const { User } = require('../../../../app/models');
+const token = require('../../../../app/helpers/token');
+
+const agent = request(app);
 
 const albumResponse = {
   userId: 1,
-  id: 23,
+  id: 3,
   title: 'quidem molestiae enim'
 };
+
 const photosResponse = [
   {
-    albumId: 23,
-    id: 1101,
-    title: 'ullam iusto quibusdam ratione aliquid',
-    url: 'https://via.placeholder.com/600/d17252',
-    thumbnailUrl: 'https://via.placeholder.com/150/d17252'
+    albumId: 3,
+    id: 1,
+    title: 'accusamus beatae ad facilis cum similique qui sunt',
+    url: 'https://via.placeholder.com/600/92c952',
+    thumbnailUrl: 'https://via.placeholder.com/150/92c952'
+  },
+  {
+    albumId: 3,
+    id: 2,
+    title: 'reprehenderit est deserunt velit ipsam',
+    url: 'https://via.placeholder.com/600/771796',
+    thumbnailUrl: 'https://via.placeholder.com/150/771796'
   }
 ];
 
 describe('GET /users/albums/:id/photos', () => {
-  test('Test logged user purchased album. It should respond with code 200', async () => {
-    const logIn = await helper.createUserAndLogin('standard');
-    helper.nockGetJsonplaceholder('/albums/23', 200, albumResponse);
-    await request(app)
-      .post('/albums/23')
-      .set({ Authorization: logIn.headers.authorization });
-    helper.nockGetJsonplaceholder('/albums/23/photos', 200, photosResponse);
-    const response = await request(app)
-      .get('/users/albums/23/photos')
-      .set({ Authorization: logIn.headers.authorization });
-    return expect(response.statusCode).toBe(200);
+  afterEach(() => nock.cleanAll());
+
+  beforeEach(() => {
+    nock('https://jsonplaceholder.typicode.com')
+      .get('/albums/3')
+      .reply(200, albumResponse);
   });
 
-  test('Test logged user not purchased album. It should fail with code 422', async () => {
-    const logIn = await helper.createUserAndLogin('standard');
-    const response = await request(app)
-      .get('/users/albums/54/photos')
-      .set({ Authorization: logIn.headers.authorization });
-    return expect(response.statusCode).toBe(422);
+  test('Should be a succesfull album photo query', () => {
+    nock('https://jsonplaceholder.typicode.com')
+      .get('/albums/3/photos')
+      .reply(200, photosResponse);
+    const user = {
+      name: 'camilo',
+      lastName: 'lopez',
+      email: 'camilopez@wolox.co',
+      password: '$2b$10$NJFKv8olocR3AdUvNO4If.ekoV2q/6qZDgSoCbsMQrcLcmdiis6ee'
+    };
+    return User.create({ ...user, admin: true })
+      .then(() => token.createToken(user))
+      .then(tok =>
+        agent
+          .post('/albums/3')
+          .set('x-access-token', tok)
+          .then(() =>
+            agent
+              .get('/users/albums/3/photos')
+              .set('x-access-token', tok)
+              .then(response => expect(response.statusCode).toBe(200))
+          )
+      );
   });
+
+  // test('Test logged user not purchased album. It should fail with code 422', async () => {
+  //   const logIn = await helper.createUserAndLogin('standard');
+  //   const response = await request(app)
+  //     .get('/users/albums/54/photos')
+  //     .set({ Authorization: logIn.headers.authorization });
+  //   return expect(response.statusCode).toBe(422);
+  // });
 });

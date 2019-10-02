@@ -14,7 +14,9 @@ const mockResponse = {
 };
 
 describe('GET /users/:id/albums', () => {
+  afterAll(() => nock.restore());
   beforeEach(() => {
+    nock.cleanAll();
     nock('https://jsonplaceholder.typicode.com')
       .get('/albums/2')
       .reply(200, mockResponse);
