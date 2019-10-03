@@ -58,7 +58,10 @@ describe('GET /users/albums/:id/photos', () => {
             agent
               .get('/users/albums/3/photos')
               .set('x-access-token', tok)
-              .then(response => expect(response.statusCode).toBe(200))
+              .then(response => {
+                expect(response.body).toHaveProperty('photos');
+                return expect(response.statusCode).toBe(200);
+              })
           )
       );
   });
@@ -77,7 +80,10 @@ describe('GET /users/albums/:id/photos', () => {
             agent
               .get('/users/albums/2/photos')
               .set('x-access-token', tok)
-              .then(response => expect(response.statusCode).toBe(401))
+              .then(response => {
+                expect(response.body).toHaveProperty('internal_code');
+                return expect(response.statusCode).toBe(401);
+              })
           )
       );
   });
