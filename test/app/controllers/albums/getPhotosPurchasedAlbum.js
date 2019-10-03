@@ -29,9 +29,15 @@ const photosResponse = [
   }
 ];
 
+const user = {
+  name: 'camilo',
+  lastName: 'lopez',
+  email: 'camilopez@wolox.co',
+  password: '$2b$10$NJFKv8olocR3AdUvNO4If.ekoV2q/6qZDgSoCbsMQrcLcmdiis6ee'
+};
+
 describe('GET /users/albums/:id/photos', () => {
   afterEach(() => nock.cleanAll());
-
   beforeEach(() => {
     nock('https://jsonplaceholder.typicode.com')
       .get('/albums/3')
@@ -42,13 +48,7 @@ describe('GET /users/albums/:id/photos', () => {
     nock('https://jsonplaceholder.typicode.com')
       .get('/albums/3/photos')
       .reply(200, photosResponse);
-    const user = {
-      name: 'camilo',
-      lastName: 'lopez',
-      email: 'camilopez@wolox.co',
-      password: '$2b$10$NJFKv8olocR3AdUvNO4If.ekoV2q/6qZDgSoCbsMQrcLcmdiis6ee'
-    };
-    return User.create({ ...user, admin: true })
+    return User.create(user)
       .then(() => token.createToken(user))
       .then(tok =>
         agent
@@ -63,11 +63,22 @@ describe('GET /users/albums/:id/photos', () => {
       );
   });
 
-  // test('Test logged user not purchased album. It should fail with code 422', async () => {
-  //   const logIn = await helper.createUserAndLogin('standard');
-  //   const response = await request(app)
-  //     .get('/users/albums/54/photos')
-  //     .set({ Authorization: logIn.headers.authorization });
-  //   return expect(response.statusCode).toBe(422);
-  // });
+  test('Should fail due to a no album purchased already', () => {
+    nock('https://jsonplaceholder.typicode.com')
+      .get('/albums/3/photos')
+      .reply(200, photosResponse);
+    return User.create(user)
+      .then(() => token.createToken(user))
+      .then(tok =>
+        agent
+          .post('/albums/3')
+          .set('x-access-token', tok)
+          .then(() =>
+            agent
+              .get('/users/albums/2/photos')
+              .set('x-access-token', tok)
+              .then(response => expect(response.statusCode).toBe(401))
+          )
+      );
+  });
 });
