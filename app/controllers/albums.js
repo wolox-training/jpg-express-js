@@ -38,3 +38,14 @@ exports.buyAlbum = (req, res, next) => {
     })
     .catch(next);
 };
+
+exports.getPurchasedAlbums = (req, res, next) => {
+  logger.info('starting the album query');
+  return interactor
+    .getPurchasedAlbums(req)
+    .then(response => {
+      logger.info('succesfull purchased albums query');
+      return res.status(200).send(response);
+    })
+    .catch(next);
+};

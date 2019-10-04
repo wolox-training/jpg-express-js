@@ -9,3 +9,11 @@ exports.buyAlbum = album =>
       logger.error(error);
       return Promise.reject(errors.databaseError('album not purchased'));
     });
+
+exports.getPurchasedAlbums = userId => {
+  const query = { where: { userId } };
+  return Album.findAll(query).catch(error => {
+    logger.error(error);
+    return Promise.reject(errors.databaseError(error.message));
+  });
+};

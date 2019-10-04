@@ -8,11 +8,14 @@ exports.auth = (type = false) => (req, res, next) => {
   try {
     const user = tokenService.decodeToken(token);
     const query = { where: { email: user.sub.email } };
-    return userDB.findUsersWhere(query).then(resp => {
-      if (type && !resp.admin) return next(errors.notAuthError('Not authorized user'));
-      req.user = resp.dataValues;
-      return next();
-    });
+    return userDB
+      .findUsersWhere(query)
+      .then(resp => {
+        if (type && !resp.admin) return next(errors.notAuthError('Not authorized user'));
+        req.user = resp.dataValues;
+        return next();
+      })
+      .catch(next);
   } catch (ex) {
     return next(errors.invalidToken('Not a valid token'));
   }
