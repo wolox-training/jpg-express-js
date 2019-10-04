@@ -19,7 +19,7 @@ exports.getPurchasedAlbums = userId => {
 };
 
 exports.getPhotosPurchasedAlbum = (userId, albumId) => {
-  const query = { where: { user_id: userId, album_id: albumId } };
+  const query = { where: { userId, albumId } };
   return Album.findOne(query).catch(error => {
     logger.error(error);
     return Promise.reject(errors.databaseError(error.message));
