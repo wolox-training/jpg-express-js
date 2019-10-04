@@ -7,7 +7,7 @@ exports.createToken = any => {
     sub: any,
     iat: moment().unix(),
     exp: moment()
-      .add(14, 'days')
+      .add(process.env.TOKEN_EXPIRATION, 'days')
       .unix()
   };
   return jwt.sign(payload, secret);
