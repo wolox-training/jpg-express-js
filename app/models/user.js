@@ -8,7 +8,7 @@ module.exports = (sequelize, DataTypes) => {
       email: { type: DataTypes.STRING, unique: true, allowNull: false, validate: { isEmail: true } },
       password: { type: DataTypes.STRING, allowNull: false, validate: { min: 8 } },
       admin: { type: DataTypes.BOOLEAN, allowNull: true },
-      session: { type: DataTypes.INTEGER, allowNull: true }
+      session: { type: DataTypes.INTEGER, allowNull: false, defaultValue: process.env.secret }
     },
     { tableName: 'users', underscored: true, timestamps: true }
   );
