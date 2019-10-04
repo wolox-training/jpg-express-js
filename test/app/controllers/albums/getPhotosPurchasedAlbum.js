@@ -1,8 +1,12 @@
 const request = require('supertest');
 const nock = require('nock');
+const { factory } = require('factory-girl');
 const app = require('../../../../app');
 const { User } = require('../../../../app/models');
 const token = require('../../../../app/helpers/token');
+const { factoryByModel } = require('../../../factory/factory_by_models');
+
+factoryByModel('Album');
 
 const agent = request(app);
 
@@ -42,6 +46,7 @@ describe('GET /users/albums/:id/photos', () => {
     nock('https://jsonplaceholder.typicode.com')
       .get('/albums/3')
       .reply(200, albumResponse);
+    factory.create('Album', { albumId: albumResponse.id, userId: 1, title: albumResponse.title });
   });
 
   test('Should be a succesfull album photo query', () => {
@@ -52,21 +57,16 @@ describe('GET /users/albums/:id/photos', () => {
       .then(() => token.createToken(user))
       .then(tok =>
         agent
-          .post('/albums/3')
+          .get('/users/albums/3/photos')
           .set('x-access-token', tok)
-          .then(() =>
-            agent
-              .get('/users/albums/3/photos')
-              .set('x-access-token', tok)
-              .then(response => {
-                expect(response.body).toHaveProperty('photos');
-                return expect(response.statusCode).toBe(200);
-              })
-          )
+          .then(response => {
+            expect(response.body).toHaveProperty('photos');
+            return expect(response.statusCode).toBe(200);
+          })
       );
   });
 
-  test('Should fail due to a no album purchased already', () => {
+  test('Should be a succesfull album photo query', () => {
     nock('https://jsonplaceholder.typicode.com')
       .get('/albums/3/photos')
       .reply(200, photosResponse);
@@ -74,17 +74,12 @@ describe('GET /users/albums/:id/photos', () => {
       .then(() => token.createToken(user))
       .then(tok =>
         agent
-          .post('/albums/3')
+          .get('/users/albums/2/photos')
           .set('x-access-token', tok)
-          .then(() =>
-            agent
-              .get('/users/albums/2/photos')
-              .set('x-access-token', tok)
-              .then(response => {
-                expect(response.body).toHaveProperty('internal_code');
-                return expect(response.statusCode).toBe(401);
-              })
-          )
+          .then(response => {
+            expect(response.body).toHaveProperty('internal_code');
+            return expect(response.statusCode).toBe(401);
+          })
       );
   });
 });
