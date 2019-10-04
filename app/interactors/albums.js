@@ -35,7 +35,6 @@ exports.getPhotosPurchasedAlbum = req => {
     if (!response) return Promise.reject(errors.notFoundError('user dont have this album already'));
     return albums
       .getPhotosByAlbumId(albumId)
-      .then(photos => Promise.resolve({ albumId, photos }))
       .catch(() => Promise.reject(errors.requestError('photos not available')));
   });
 };
