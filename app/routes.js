@@ -6,7 +6,7 @@ const {
   getPurchasedAlbums,
   getPhotosPurchasedAlbum
 } = require('./controllers/albums');
-const { registerUser, singIn, getUsers, registerAdmin } = require('./controllers/users');
+const { registerUser, singIn, getUsers, registerAdmin, invalidateAll } = require('./controllers/users');
 const { registerValidator, sessionValidator } = require('../app/schemas/users');
 const { checkError } = require('./middlewares/validatorSchema');
 const { auth } = require('./middlewares/auth');
@@ -24,4 +24,5 @@ exports.init = app => {
   app.post('/albums/:id', auth(), buyAlbum);
   app.get('/users/:userId/albums', auth(), getPurchasedAlbums);
   app.get('/users/albums/:id/photos', auth(), getPhotosPurchasedAlbum);
+  app.post('/users/sessions/invalidate_all', auth(), invalidateAll);
 };

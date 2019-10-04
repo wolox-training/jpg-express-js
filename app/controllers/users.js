@@ -47,3 +47,11 @@ exports.getUsers = (req, res, next) => {
     .then(response => res.status(200).send(response))
     .catch(next);
 };
+
+exports.invalidateAll = (req, res, next) => {
+  logger.info('Starting the user log-out');
+  return interactor
+    .getAllUsers(req)
+    .then(response => res.status(200).send(response))
+    .catch(next);
+};
