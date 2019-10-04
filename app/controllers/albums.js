@@ -56,7 +56,7 @@ exports.getPhotosPurchasedAlbum = (req, res, next) => {
     .getPhotosPurchasedAlbum(req)
     .then(response => {
       logger.info('succesfull purchased albums query');
-      return res.status(200).send(response);
+      return res.status(200).send({ photos: response });
     })
     .catch(next);
 };
