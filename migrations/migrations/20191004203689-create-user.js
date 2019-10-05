@@ -1,10 +1,10 @@
-// const moment = require('moment');
+const moment = require('moment');
 
 module.exports = {
   up: (queryInterface, sequelize) =>
     queryInterface.addColumn('users', 'session', {
       type: sequelize.INTEGER,
-      // defaultValue: moment().unix(),
+      defaultValue: moment().unix(),
       allowNull: true
     }),
   down: queryInterface => queryInterface.removeColumn('users', 'session')

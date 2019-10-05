@@ -1,3 +1,4 @@
+const moment = require('moment');
 const errors = require('../errors');
 const logger = require('../logger');
 const { User } = require('../models');
@@ -43,3 +44,9 @@ exports.getAllUsers = ({ query: { page = 0, limit = 10 } }) => {
     raw: true
   }).catch(() => Promise.reject(errors.databaseError('cant get users')));
 };
+
+exports.invalidateAll = user =>
+  User.update({ session: moment().unix() }, { where: { id: user.id }, raw: true }).catch(error => {
+    logger.error(error);
+    return Promise.reject(errors.databaseError(' error fatal'));
+  });

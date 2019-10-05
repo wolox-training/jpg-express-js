@@ -50,8 +50,8 @@ exports.getUsers = (req, res, next) => {
 
 exports.invalidateAll = (req, res, next) => {
   logger.info('Starting the user log-out');
-  return interactor
-    .getAllUsers(req)
-    .then(response => res.status(200).send(response))
+  return userDB
+    .invalidateAll(req.user)
+    .then(() => res.status(200).send({ log_out: 'successfull' }))
     .catch(next);
 };
