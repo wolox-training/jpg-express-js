@@ -3,7 +3,6 @@ const moment = require('moment');
 const { factory } = require('factory-girl');
 const jwt = require('jsonwebtoken');
 const app = require('../../../../app');
-// const { User } = require('../../../../app/models');
 const token = require('../../../../app/helpers/token');
 const { factoryByModel } = require('../../../factory/factory_by_models');
 const { secret } = require('../../../../config').common.session;
