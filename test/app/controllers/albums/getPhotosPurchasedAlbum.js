@@ -1,6 +1,7 @@
 const request = require('supertest');
 const nock = require('nock');
 const { factory } = require('factory-girl');
+const moment = require('moment');
 const app = require('../../../../app');
 const token = require('../../../../app/helpers/token');
 const { factoryByModel } = require('../../../factory/factory_by_models');
@@ -37,7 +38,8 @@ const user = {
   name: 'camilo',
   lastName: 'lopez',
   email: 'camilopez@wolox.co',
-  password: '$2b$10$NJFKv8olocR3AdUvNO4If.ekoV2q/6qZDgSoCbsMQrcLcmdiis6ee'
+  password: '$2b$10$NJFKv8olocR3AdUvNO4If.ekoV2q/6qZDgSoCbsMQrcLcmdiis6ee',
+  session: moment().unix()
 };
 
 describe('GET /users/albums/:id/photos', () => {

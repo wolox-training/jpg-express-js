@@ -4,11 +4,9 @@ const { factory } = require('factory-girl');
 const jwt = require('jsonwebtoken');
 const app = require('../../../../app');
 const token = require('../../../../app/helpers/token');
-const { factoryByModel } = require('../../../factory/factory_by_models');
 const { secret } = require('../../../../config').common.session;
 const { expiration } = require('../../../../config').common.session;
 
-factoryByModel('User');
 const agent = request(app);
 const user = {
   name: 'camilo',
