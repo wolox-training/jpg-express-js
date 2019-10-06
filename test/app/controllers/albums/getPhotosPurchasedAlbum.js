@@ -2,11 +2,11 @@ const request = require('supertest');
 const nock = require('nock');
 const { factory } = require('factory-girl');
 const app = require('../../../../app');
-const { User } = require('../../../../app/models');
 const token = require('../../../../app/helpers/token');
 const { factoryByModel } = require('../../../factory/factory_by_models');
 
 factoryByModel('Album');
+factoryByModel('User');
 
 const agent = request(app);
 
@@ -53,7 +53,8 @@ describe('GET /users/albums/:id/photos', () => {
     nock('https://jsonplaceholder.typicode.com')
       .get('/albums/3/photos')
       .reply(200, photosResponse);
-    return User.create(user)
+    return factory
+      .create('User', user)
       .then(() => token.createToken(user))
       .then(tok =>
         agent
@@ -70,7 +71,8 @@ describe('GET /users/albums/:id/photos', () => {
     nock('https://jsonplaceholder.typicode.com')
       .get('/albums/3/photos')
       .reply(200, photosResponse);
-    return User.create(user)
+    return factory
+      .create('User', user)
       .then(() => token.createToken(user))
       .then(tok =>
         agent
