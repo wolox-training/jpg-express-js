@@ -6,7 +6,6 @@ exports.buyAlbum = album =>
   Album.create(album)
     .then(resp => Promise.resolve({ purchased: resp }))
     .catch(error => {
-      console.log(error, 'db error');
       logger.error(error);
       return Promise.reject(errors.databaseError('album not purchased'));
     });
