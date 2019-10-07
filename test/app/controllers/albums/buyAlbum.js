@@ -1,5 +1,6 @@
 const request = require('supertest');
 const nock = require('nock');
+const moment = require('moment');
 const app = require('../../../../app');
 const { User } = require('../../../../app/models');
 
@@ -9,7 +10,8 @@ const createUserAndLogin = () => {
     lastName: 'gonzalez',
     email: 'raul@wolox.co',
     password: '$2b$10$q0/nJGRvSyZz3i7fgvTY2OwMl4MPozMQI/62Bkz5F88tSl.3Y2W4u',
-    admin: true
+    admin: true,
+    session: moment().unix()
   };
   return User.create(user).then(() =>
     request(app)
