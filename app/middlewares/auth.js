@@ -12,7 +12,8 @@ exports.auth = (type = false) => (req, res, next) => {
       .findUsersWhere(query)
       .then(resp => {
         if (type && !resp.admin) return next(errors.notAuthError('Not authorized user'));
-        if (user.iat < resp.dataValues.session) return next(errors.invalidToken('session expired'));
+        if (resp.dataValues.session && user.iat < resp.dataValues.session)
+          return next(errors.invalidToken('session expired'));
         req.user = resp.dataValues;
         return next();
       })
