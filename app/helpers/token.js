@@ -1,7 +1,6 @@
 const moment = require('moment');
 const jwt = require('jsonwebtoken');
-const { secret } = require('../../config').common.session;
-const { expiration } = require('../../config').common.session;
+const { secret, expiration } = require('../../config').common.session;
 
 exports.createToken = any => {
   const payload = {
