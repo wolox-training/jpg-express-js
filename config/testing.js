@@ -9,7 +9,8 @@ exports.config = {
       secret: 'some-super-secret'
     },
     resources: {
-      urlApi: 'https://jsonplaceholder.typicode.com'
+      urlApi: 'https://jsonplaceholder.typicode.com',
+      expiration: 1
     }
   }
 };
