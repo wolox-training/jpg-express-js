@@ -17,7 +17,7 @@ const user = {
   admin: true
 };
 
-describe('POST /users/sessions/invalidate_all', () => {
+describe('AUTH token expiration', () => {
   test('Should be a successfull users query with a non expired token', () =>
     factory.create('User', { ...user, admin: true, session: moment().unix() }).then(() =>
       agent
