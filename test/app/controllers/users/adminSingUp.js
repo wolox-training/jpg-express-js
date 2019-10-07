@@ -1,6 +1,7 @@
 const request = require('supertest');
+const { factory } = require('factory-girl');
+const moment = require('moment');
 const app = require('../../../../app');
-const { User } = require('../../../../app/models');
 
 describe('POST /admin/users', () => {
   const agent = request(app);
@@ -9,10 +10,12 @@ describe('POST /admin/users', () => {
     lastName: 'benavides',
     email: 'dani@wolox.co',
     password: '$2b$10$q0/nJGRvSyZz3i7fgvTY2OwMl4MPozMQI/62Bkz5F88tSl.3Y2W4u',
-    admin: true
+    admin: true,
+    session: moment().unix()
   };
   test('Should be a succesful admin creation', () =>
-    User.create(testAdmin)
+    factory
+      .create('User', testAdmin)
       .then(() =>
         agent.post('/users/sessions').send({
           email: 'dani@wolox.co',
@@ -33,13 +36,15 @@ describe('POST /admin/users', () => {
       .then(response => expect(response.statusCode).toBe(201)));
 
   test('Should fail due to no admin user', () =>
-    User.create({
-      name: 'daniel',
-      lastName: 'benavides',
-      email: 'daniel@wolox.co',
-      password: '$2b$10$q0/nJGRvSyZz3i7fgvTY2OwMl4MPozMQI/62Bkz5F88tSl.3Y2W4u',
-      admin: false
-    })
+    factory
+      .create('User', {
+        name: 'daniel',
+        lastName: 'benavides',
+        email: 'daniel@wolox.co',
+        password: '$2b$10$q0/nJGRvSyZz3i7fgvTY2OwMl4MPozMQI/62Bkz5F88tSl.3Y2W4u',
+        admin: false,
+        session: moment().unix()
+      })
       .then(() =>
         agent.post('/users/sessions').send({
           email: 'daniel@wolox.co',

@@ -55,18 +55,15 @@ describe('GET /users/albums/:id/photos', () => {
     nock('https://jsonplaceholder.typicode.com')
       .get('/albums/3/photos')
       .reply(200, photosResponse);
-    return factory
-      .create('User', user)
-      .then(() => token.createToken(user))
-      .then(tok =>
-        agent
-          .get('/users/albums/3/photos')
-          .set('x-access-token', tok)
-          .then(response => {
-            expect(response.body).toHaveProperty('photos');
-            return expect(response.statusCode).toBe(200);
-          })
-      );
+    return factory.create('User', user).then(() =>
+      agent
+        .get('/users/albums/3/photos')
+        .set('x-access-token', token.createToken(user))
+        .then(response => {
+          expect(response.body).toHaveProperty('photos');
+          return expect(response.statusCode).toBe(200);
+        })
+    );
   });
 
   test('Should be a succesfull album photo query', () => {
