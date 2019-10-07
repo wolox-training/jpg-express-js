@@ -6,11 +6,11 @@ exports.config = {
       name: process.env.DB_NAME_TEST
     },
     session: {
-      secret: 'some-super-secret'
+      secret: 'some-super-secret',
+      expiration: 1
     },
     resources: {
-      urlApi: 'https://jsonplaceholder.typicode.com',
-      expiration: 1
+      urlApi: 'https://jsonplaceholder.typicode.com'
     }
   }
 };

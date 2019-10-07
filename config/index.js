@@ -48,8 +48,7 @@ const config = {
       nodeVersion: process.env.NODE_VERSION || 'X-Node-Version'
     },
     resources: {
-      urlApi: process.env.URL_API,
-      expiration: process.env.TOKEN_EXPIRATION
+      urlApi: process.env.URL_API
     }
   }
 };
