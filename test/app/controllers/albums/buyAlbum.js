@@ -32,7 +32,7 @@ describe('POST /albums/:id', () => {
   test('Should be a successfull album purchase', () =>
     factory
       .create('User', user)
-      .then(() => agent.post('/albums/2').set('x-access-token', token.createToken(user)))
+      .then(() => agent.post('/albums/2').set('x-access-token', token.createToken(user).token))
       .then(response => {
         expect(response.statusCode).toBe(200);
       }));
@@ -43,8 +43,8 @@ describe('POST /albums/:id', () => {
       .then(logIn =>
         agent
           .post('/albums/2/')
-          .set('x-access-token', logIn.token)
-          .then(() => agent.post('/albums/2/').set('x-access-token', logIn.token))
+          .set('x-access-token', logIn)
+          .then(() => agent.post('/albums/2/').set('x-access-token', logIn))
       )
       .then(response => expect(response.body).toHaveProperty('message')));
 });
