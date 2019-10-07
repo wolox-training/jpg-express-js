@@ -17,3 +17,11 @@ exports.getPurchasedAlbums = userId => {
     return Promise.reject(errors.databaseError(error.message));
   });
 };
+
+exports.getPhotosPurchasedAlbum = (userId, albumId) => {
+  const query = { where: { userId, albumId } };
+  return Album.findOne(query).catch(error => {
+    logger.error(error);
+    return Promise.reject(errors.databaseError(error.message));
+  });
+};

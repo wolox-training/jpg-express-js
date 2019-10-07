@@ -19,7 +19,9 @@ const user = {
   password: '$2b$10$Rz9Vh4/bNhclktWDcQ1zC.PF/Nlhx5YAQaQyeUMMyq5BDtb9fEGx6'
 };
 describe('GET /users/:id/albums', () => {
+  afterAll(() => nock.restore());
   beforeEach(() => {
+    nock.cleanAll();
     nock('https://jsonplaceholder.typicode.com')
       .get('/albums/2')
       .reply(200, mockResponse);

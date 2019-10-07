@@ -27,3 +27,14 @@ exports.getPurchasedAlbums = req => {
     return serializer.albumPurchasedResponse(response, userId);
   });
 };
+
+exports.getPhotosPurchasedAlbum = req => {
+  const albumId = req.params.id;
+  const userId = req.user.id;
+  return albumDB.getPhotosPurchasedAlbum(userId, albumId).then(response => {
+    if (!response) return Promise.reject(errors.notFoundError('user dont have this album already'));
+    return albums
+      .getPhotosByAlbumId(albumId)
+      .catch(() => Promise.reject(errors.requestError('photos not available')));
+  });
+};
