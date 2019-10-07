@@ -16,7 +16,7 @@ exports.singIn = user => {
     .then(userFound => {
       if (!userFound) return Promise.reject(errors.invalidData('password incorrect'));
       logger.info(`User with mail ${user.email} have singged in`);
-      return Promise.resolve({ token: token.createToken(user) });
+      return Promise.resolve(token.createToken(user));
     });
 };
 

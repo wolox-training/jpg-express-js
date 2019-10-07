@@ -58,7 +58,7 @@ describe('GET /users/albums/:id/photos', () => {
     return factory.create('User', user).then(() =>
       agent
         .get('/users/albums/3/photos')
-        .set('x-access-token', token.createToken(user))
+        .set('x-access-token', token.createToken(user).token)
         .then(response => {
           expect(response.body).toHaveProperty('photos');
           return expect(response.statusCode).toBe(200);
@@ -72,7 +72,7 @@ describe('GET /users/albums/:id/photos', () => {
       .reply(200, photosResponse);
     return factory
       .create('User', user)
-      .then(() => token.createToken(user))
+      .then(() => token.createToken(user).token)
       .then(tok =>
         agent
           .get('/users/albums/2/photos')

@@ -21,7 +21,7 @@ describe('POST /users/sessions/invalidate_all', () => {
     factory.create('User', { ...user, session: moment().unix() }).then(() =>
       agent
         .post('/users/sessions/invalidate_all')
-        .set('x-access-token', token.createToken(user))
+        .set('x-access-token', token.createToken(user).token)
         .then(response => {
           expect(response.body).toHaveProperty('log_out');
           return expect(response.statusCode).toBe(200);

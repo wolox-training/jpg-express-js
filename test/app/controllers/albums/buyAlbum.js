@@ -35,7 +35,7 @@ describe('POST /albums/:id', () => {
 
   test('Should be a successfull album purchase', () =>
     createUserAndLogin()
-      .then(logIn => agent.post('/albums/2/').set('x-access-token', logIn))
+      .then(logIn => agent.post('/albums/2/').set('x-access-token', logIn.token))
       .then(response => expect(response.statusCode).toBe(200)));
 
   test('Should fail because the album is already purchased', () =>
@@ -43,8 +43,8 @@ describe('POST /albums/:id', () => {
       .then(logIn =>
         agent
           .post('/albums/2/')
-          .set('x-access-token', logIn)
-          .then(() => agent.post('/albums/2/').set('x-access-token', logIn))
+          .set('x-access-token', logIn.token)
+          .then(() => agent.post('/albums/2/').set('x-access-token', logIn.token))
       )
       .then(response => expect(response.body).toHaveProperty('message')));
 });
