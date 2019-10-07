@@ -1,8 +1,9 @@
 const request = require('supertest');
 const nock = require('nock');
 const moment = require('moment');
+const { factory } = require('factory-girl');
 const app = require('../../../../app');
-const { User } = require('../../../../app/models');
+const token = require('../../../../app/helpers/token');
 
 const createUserAndLogin = () => {
   const user = {
@@ -13,14 +14,7 @@ const createUserAndLogin = () => {
     admin: true,
     session: moment().unix()
   };
-  return User.create(user).then(() =>
-    request(app)
-      .post('/users/sessions')
-      .send({
-        email: 'raul@wolox.co',
-        password: '12345678'
-      })
-  );
+  return factory.create('User', user).then(() => token.createToken(user));
 };
 
 const mockResponse = {
@@ -41,7 +35,7 @@ describe('POST /albums/:id', () => {
 
   test('Should be a successfull album purchase', () =>
     createUserAndLogin()
-      .then(logIn => agent.post('/albums/2/').set('x-access-token', logIn.body.token))
+      .then(logIn => agent.post('/albums/2/').set('x-access-token', logIn))
       .then(response => expect(response.statusCode).toBe(200)));
 
   test('Should fail because the album is already purchased', () =>
@@ -49,8 +43,8 @@ describe('POST /albums/:id', () => {
       .then(logIn =>
         agent
           .post('/albums/2/')
-          .set('x-access-token', logIn.body.token)
-          .then(() => agent.post('/albums/2/').set('x-access-token', logIn.body.token))
+          .set('x-access-token', logIn)
+          .then(() => agent.post('/albums/2/').set('x-access-token', logIn))
       )
       .then(response => expect(response.body).toHaveProperty('message')));
 });
