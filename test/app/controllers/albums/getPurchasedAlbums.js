@@ -1,8 +1,9 @@
 const request = require('supertest');
 const nock = require('nock');
+const moment = require('moment');
+const { factory } = require('factory-girl');
 const app = require('../../../../app');
 const helper = require('../../testHelper');
-const { User } = require('../../../../app/models');
 const token = require('../../../../app/helpers/token');
 
 const agent = request(app);
@@ -16,7 +17,8 @@ const user = {
   name: 'alan',
   lastName: 'correa',
   email: 'alan@wolox.co',
-  password: '$2b$10$Rz9Vh4/bNhclktWDcQ1zC.PF/Nlhx5YAQaQyeUMMyq5BDtb9fEGx6'
+  password: '$2b$10$Rz9Vh4/bNhclktWDcQ1zC.PF/Nlhx5YAQaQyeUMMyq5BDtb9fEGx6',
+  session: moment().unix()
 };
 describe('GET /users/:id/albums', () => {
   afterAll(() => nock.restore());
@@ -28,7 +30,8 @@ describe('GET /users/:id/albums', () => {
   });
 
   test('Should be a succesfull album query of a default user', () =>
-    User.create({ ...user, admin: true })
+    factory
+      .create('User', { ...user, admin: true })
       .then(() => token.createToken(user))
       .then(tok =>
         agent
@@ -46,7 +49,8 @@ describe('GET /users/:id/albums', () => {
       ));
 
   test('Should be a succesfull album query of an admin user', () =>
-    User.create({ ...user, admin: true })
+    factory
+      .create('User', { ...user, admin: true })
       .then(() => token.createToken(user))
       .then(tok =>
         agent

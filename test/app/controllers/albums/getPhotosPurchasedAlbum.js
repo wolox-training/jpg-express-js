@@ -1,6 +1,7 @@
 const request = require('supertest');
 const nock = require('nock');
 const { factory } = require('factory-girl');
+const moment = require('moment');
 const app = require('../../../../app');
 const token = require('../../../../app/helpers/token');
 const { factoryByModel } = require('../../../factory/factory_by_models');
@@ -37,7 +38,8 @@ const user = {
   name: 'camilo',
   lastName: 'lopez',
   email: 'camilopez@wolox.co',
-  password: '$2b$10$NJFKv8olocR3AdUvNO4If.ekoV2q/6qZDgSoCbsMQrcLcmdiis6ee'
+  password: '$2b$10$NJFKv8olocR3AdUvNO4If.ekoV2q/6qZDgSoCbsMQrcLcmdiis6ee',
+  session: moment().unix()
 };
 
 describe('GET /users/albums/:id/photos', () => {
@@ -53,18 +55,15 @@ describe('GET /users/albums/:id/photos', () => {
     nock('https://jsonplaceholder.typicode.com')
       .get('/albums/3/photos')
       .reply(200, photosResponse);
-    return factory
-      .create('User', user)
-      .then(() => token.createToken(user))
-      .then(tok =>
-        agent
-          .get('/users/albums/3/photos')
-          .set('x-access-token', tok)
-          .then(response => {
-            expect(response.body).toHaveProperty('photos');
-            return expect(response.statusCode).toBe(200);
-          })
-      );
+    return factory.create('User', user).then(() =>
+      agent
+        .get('/users/albums/3/photos')
+        .set('x-access-token', token.createToken(user))
+        .then(response => {
+          expect(response.body).toHaveProperty('photos');
+          return expect(response.statusCode).toBe(200);
+        })
+    );
   });
 
   test('Should be a succesfull album photo query', () => {
