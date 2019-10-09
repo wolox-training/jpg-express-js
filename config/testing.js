@@ -7,7 +7,7 @@ exports.config = {
     },
     session: {
       secret: 'some-super-secret',
-      expiration: 1
+      expiration: 10800
     },
     resources: {
       urlApi: 'https://jsonplaceholder.typicode.com'

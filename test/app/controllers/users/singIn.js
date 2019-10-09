@@ -27,7 +27,7 @@ describe('POST /users/sessions', () => {
       );
   });
 
-  test('Test log-in fail due to wrong email. It should respond with 403', () => {
+  test('Should fail due to wrong email', () => {
     const agent = request(app);
     return agent
       .post('/users')
@@ -45,7 +45,7 @@ describe('POST /users/sessions', () => {
       );
   });
 
-  test('Test log-in fail due to wrong password. It should respond with 403', () => {
+  test('Should fail due to wrong password', () => {
     const agent = request(app);
     return agent
       .post('/users')

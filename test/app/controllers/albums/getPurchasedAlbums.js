@@ -32,7 +32,7 @@ describe('GET /users/:id/albums', () => {
   test('Should be a succesfull album query of a default user', () =>
     factory
       .create('User', { ...user, admin: true })
-      .then(() => token.createToken(user))
+      .then(() => token.createToken(user).token)
       .then(tok =>
         agent
           .post('/albums/2')
@@ -51,7 +51,7 @@ describe('GET /users/:id/albums', () => {
   test('Should be a succesfull album query of an admin user', () =>
     factory
       .create('User', { ...user, admin: true })
-      .then(() => token.createToken(user))
+      .then(() => token.createToken(user).token)
       .then(tok =>
         agent
           .post('/albums/2')
